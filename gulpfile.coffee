@@ -1,8 +1,27 @@
 gulp = require 'gulp'
 coffee = require 'gulp-coffee'
 concat = require 'gulp-concat'
+insert = require 'gulp-insert'
 rename = require 'gulp-rename'
 uglify = require 'gulp-uglify'
+
+boiler =
+	start: """
+		(function(){
+		var pathos = {
+			version: '0.0.0'
+		};
+		"""
+	end: """
+		if ( typeof define === 'function' && define.amd ){
+				define(pathos);
+			}
+			else if ( typeof module === 'object' && module.exports ){
+				module.exports = pathos;
+			}
+			this.pathos = pathos;
+		})();
+		"""
 
 gulp.task 'build', ->
 	gulp.src 'src/**/*.coffee'
@@ -10,6 +29,8 @@ gulp.task 'build', ->
 		bare: true
 	.on 'error', swallowError
 	.pipe concat 'pathos.js'
+	.pipe insert.wrap(boiler.start, boiler.end)
+	.on 'error', swallowError
 	.pipe gulp.dest 'dist'
 	.pipe uglify
 		preserveComment: 'some'

@@ -1,10 +1,12 @@
-var array, i, j, len;
-
-console.log('hello world');
-
-array = [1, 2, 3, 4, 5];
-
-for (j = 0, len = array.length; j < len; j++) {
-  i = array[j];
-  console.log(i);
-}
+(function(){
+var pathos = {
+	version: '0.0.0'
+};
+if ( typeof define === 'function' && define.amd ){
+		define(pathos);
+	}
+	else if ( typeof module === 'object' && module.exports ){
+		module.exports = pathos;
+	}
+	this.pathos = pathos;
+})();
