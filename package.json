@@ -1,8 +1,8 @@
 {
-  "name": "pathos",
+  "name": "please",
   "version": "0.0.0",
-  "description": "SVG toolkit",
-  "main": "dist/pathos.min.js",
+  "description": "color toolkit",
+  "main": "dist/please.min.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
