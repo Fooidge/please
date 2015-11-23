@@ -1,1 +1,1 @@
-console.log 'hello'
+please.meh = new Color('#663399')

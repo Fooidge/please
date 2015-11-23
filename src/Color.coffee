@@ -1,21 +1,21 @@
 class Color
 	constructor: (color) ->
-		switch detectType color
+		switch @detectType color
 			when 'hsv'
 				@hsv =
 					h: color.h
 					s: color.s
 					v: color.v
-			when 'rgb' then @hsv = @rgbToHSV color
-			when 'hex' then @hsv = @hexToHSV color
+			when 'rgb' then @hsv = @rgbToHsv color
+			when 'hex' then @hsv = @hexToHsv color
 
-	isHSV: (color) ->
+	isHsv: (color) ->
 		return true if isObject(color) and color.h? and color.s? and color.v?
 		return false
 
-	isRGB: (color) ->
+	isRgb: (color) ->
 		rgbTest = /rgb\(\s?(\d{1,3},\s?){2}\d{1,3}\s?\)/i
-		return true if isObject color and color.h? and color.s? and color.v?
+		return true if isObject(color) and color.r? and color.g? and color.b?
 		return true if isString(color) and rgbTest.test(color)
 		return false
 
@@ -25,13 +25,12 @@ class Color
 		return false
 
 	detectType: (color) =>
-		switch color
-			when @isHSV color then return 'hsv'
-			when @isRGB color then return 'rgb'
-			when @isHex color then return 'hex'
-			else
-				throw new Error 'Not a valid color type.'
-				return false
+		# switch color
+		if @isHsv color then return 'hsv'
+		if @isRgb color then return 'rgb'
+		if @isHex color then return 'hex'
+		else
+			throw new Error 'Not a valid color type.'
 
 	getHtmlColor: (colorName) =>
 		color = colorName.toLowerCase()
@@ -39,8 +38,8 @@ class Color
 		throw new Error 'Not a valid HTML color.'
 		return false
 
-	rgbToHSV: (rgb) =>
-		if not @isRGB rgb then throw new Error 'Not a valid RGB object.'
+	rgbToHsv: (rgb) =>
+		if not @isRgb rgb then throw new Error 'Not a valid RGB object.'
 		r = rgb.r / 255
 		g = rgb.g / 255
 		b = rgb.b / 255
@@ -63,7 +62,7 @@ class Color
 		return hsvObj
 
 	hsvToRgb: (hsv) =>
-		if not @isHSV hsv then throw new Error 'Not a valid HSV object.'
+		if not @isHsv hsv then throw new Error 'Not a valid HSV object.'
 		h = hsv.h
 		s = hsv.s
 		v = hsv.v
@@ -116,7 +115,7 @@ class Color
 
 		return rgbObj
 
-	hexToRGB: (hex) =>
+	hexToRgb: (hex) =>
 		if not @isHex hex then throw new Error 'Not a valid hex string.'
 		#expand to long version
 		hex = hex.replace /^#?([a-f\d])([a-f\d])([a-f\d])$/i, (m, r, g, b) -> r + r + g + g + b + b
@@ -129,10 +128,10 @@ class Color
 			b: parsedHex & 255
 		return rgbObj
 
-	hexToHSV: (hex) => @rgbToHSV(@hexToRGB(hex))
+	hexToHsv: (hex) => @rgbToHsv(@hexToRgb(hex))
 
 	rgbToHex: (rgb) =>
-		if not @isRGB rgb then throw new Error 'Not a valid RGB object.'
+		if not @isRgb rgb then throw new Error 'Not a valid RGB object.'
 		base = "##{1 << 24}#{rgb.r << 16}#{rgb.g << 8}#{rgb.g}"
 		return base.toString(16).slice(1)
 
