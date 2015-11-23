@@ -3,6 +3,7 @@ coffee = require 'gulp-coffee'
 concat = require 'gulp-concat'
 insert = require 'gulp-insert'
 rename = require 'gulp-rename'
+sourcemaps = require 'gulp-sourcemaps'
 uglify = require 'gulp-uglify'
 
 boiler =
@@ -25,12 +26,14 @@ boiler =
 
 gulp.task 'build', ->
 	gulp.src 'src/**/*.coffee'
+	.pipe sourcemaps.init()
 	.pipe coffee
 		bare: true
 	.on 'error', swallowError
 	.pipe concat 'please.js'
 	.pipe insert.wrap(boiler.start, boiler.end)
 	.on 'error', swallowError
+	.pipe sourcemaps.write()
 	.pipe gulp.dest 'dist'
 	.pipe uglify
 		preserveComment: 'some'
