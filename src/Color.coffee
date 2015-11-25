@@ -1,45 +1,155 @@
 class Color
 	constructor: (color) ->
-		switch @detectType color
-			when 'hsv'
-				@hsv =
+		switch @_detectType color
+			when 'HSV'
+				@__model =
 					h: color.h
 					s: color.s
 					v: color.v
-			when 'rgb' then @hsv = @rgbToHsv color
-			when 'hex' then @hsv = @hexToHsv color
+			when 'HSL' then @__model = @_hslToHsv color
+			when 'RGB' then @__model = @_rgbToHsv color
+			when 'HEX' then @__model = @_hexToHsv color
 
-	isHsv: (color) ->
+	_isHsv: (color) ->
 		return true if isObject(color) and color.h? and color.s? and color.v?
 		return false
 
-	isRgb: (color) ->
-		rgbTest = /rgb\(\s?(\d{1,3},\s?){2}\d{1,3}\s?\)/i
+	_isHsl: (color) ->
+		return true if isObject(color) and color.h? and color.s? and color.l?
+		return false
+
+	_isHslString: (color) ->
+		hslTest = /hsl\(s?d{1,3},s?d{1,3}%,s?d{1,3}%s?\)/i
+		return true if isString(color) and hslTest.test(color)
+		return false
+
+	_isRgb: (color) ->
 		return true if isObject(color) and color.r? and color.g? and color.b?
+		return false
+
+	_isRgbString: (color) ->
+		rgbTest = /rgb\(\s?(\d{1,3},\s?){2}\d{1,3}\s?\)/i
 		return true if isString(color) and rgbTest.test(color)
 		return false
 
-	isHex: (color) ->
+	_isHex: (color) ->
 		hexTest = /^#?(?:[0-9a-f]{3}){1,2}$/i
 		return true if isString(color) and hexTest.test(color)
 		return false
 
-	detectType: (color) =>
+	hue: (value) =>
+		if value?
+			@__model.h = clamp value 0, 360
+			return this
+		return @__model.h
+
+	h: @::hue
+
+	saturation: (value) =>
+		if value?
+			@__model.s = clamp value
+			return this
+		return @__model.s
+
+	s: @::saturation
+
+	value: (value) =>
+		if value?
+			@__model.v = clamp value
+			return this
+		return @__model.v
+
+	v: @::value
+
+	brightness: @::value
+
+	b: @::value
+
+	alpha: (value) =>
+		if value? and isNumber(value)
+			@__model.a = clamp value
+			return this
+		return @__model.a
+
+	a: @::alpha
+
+	opacity: @::alpha
+
+	o: @::alpha
+
+	red: (value) =>
+		if value?
+			rgb = @_hsvToRgb @__model
+			rgb.r = clamp value 0, 255
+			@__model = @_rgbToHsv rgb
+			return this
+		return @_hsvToRgb(@__model).r
+
+	green: (value) =>
+		if value?
+			rgb = @_hsvToRgb @__model
+			rgb.g = clamp value 0, 255
+			@__model = @_rgbToHsv rgb
+			return this
+		return @_hsvToRgb(@__model).g
+
+	blue: (value) =>
+		if value?
+			rgb = @_hsvToRgb @__model
+			rgb.b = clamp value 0, 255
+			@__model = @_rgbToHsv rgb
+			return this
+		return @_hsvToRgb(@__model).b
+
+	rgb: (value) =>
+		if value?
+			@__model = @_rgbToHsv value
+			return this
+		return @_hsvToRgb
+
+	rgbString: =>
+		rgb = @_hsvToRgb @__model
+		return "rgb(#{rgb.r},#{rgb.g},#{rgb.b})" if not @__model.a?
+		return "rgba(#{rgb.r},#{rgb.g},#{rgb.b},#{@__model.a})"
+
+	hsl: (value) =>
+		if value?
+			@__model = @_hslToHsv value
+			return this
+		return @_hsvToHsl @__model
+
+	hslString: =>
+		hsl = @_hsvToHsl @__model
+		return "hsl(#{hsl.h},#{hsl.s},#{hsl.l})" if not @__model.a?
+		return "hsla(#{hsl.h},#{hsl.s},#{hsl.l},#{@__model.a})"
+
+	hsv: (value) =>
+		if value? and @_isHsv(value)
+			@__model = value
+			return this
+		return @__model
+
+	#TODO: correctly factor this as a getter/setter
+	htmlColor: (value) =>
+		if value? and isString value
+			colorName = value.toLowerCase()
+			return @htmlColors[color] if color in @htmlColors
+			throw new Error 'Not a valid HTML color.'
+			return false
+
+	_detectType: (color) =>
 		# switch color
-		if @isHsv color then return 'hsv'
-		if @isRgb color then return 'rgb'
-		if @isHex color then return 'hex'
+		if @_isHsv color then return 'HSV'
+		if @_isHsl color then return 'HSL'
+		if @_isRgb color then return 'RGB'
+		if @_isRgbString color then return 'RGB_STRING'
+		if @_isHex color then return 'HEX'
 		else
 			throw new Error 'Not a valid color type.'
 
-	getHtmlColor: (colorName) =>
-		color = colorName.toLowerCase()
-		return @htmlColors[color] if color in @htmlColors
-		throw new Error 'Not a valid HTML color.'
-		return false
 
-	rgbToHsv: (rgb) =>
-		if not @isRgb rgb then throw new Error 'Not a valid RGB object.'
+	_rgbToHsv: (rgb) =>
+		if not @_isRgb rgb then throw new Error 'Not a valid RGB object.'
 		r = rgb.r / 255
 		g = rgb.g / 255
 		b = rgb.b / 255
@@ -61,8 +171,8 @@ class Color
 			v: maxRgb
 		return hsvObj
 
-	hsvToRgb: (hsv) =>
-		if not @isHsv hsv then throw new Error 'Not a valid HSV object.'
+	_hsvToRgb: (hsv) =>
+		if not @_isHsv hsv then throw new Error 'Not a valid HSV object.'
 		h = hsv.h
 		s = hsv.s
 		v = hsv.v
@@ -115,8 +225,8 @@ class Color
 
 		return rgbObj
 
-	hexToRgb: (hex) =>
-		if not @isHex hex then throw new Error 'Not a valid hex string.'
+	_hexToRgb: (hex) =>
+		if not @_isHex hex then throw new Error 'Not a valid hex string.'
 		#expand to long version
 		hex = hex.replace /^#?([a-f\d])([a-f\d])([a-f\d])$/i, (m, r, g, b) -> r + r + g + g + b + b
 		#remove everything expect valid numbers
@@ -128,14 +238,45 @@ class Color
 			b: parsedHex & 255
 		return rgbObj
 
-	hexToHsv: (hex) => @rgbToHsv(@hexToRgb(hex))
+	_hexToHsv: (hex) => @_rgbToHsv(@_hexToRgb(hex))
 
-	rgbToHex: (rgb) =>
-		if not @isRgb rgb then throw new Error 'Not a valid RGB object.'
+	_rgbToHex: (rgb) =>
+		if not @_isRgb rgb then throw new Error 'Not a valid RGB object.'
 		base = "##{1 << 24}#{rgb.r << 16}#{rgb.g << 8}#{rgb.g}"
 		return base.toString(16).slice(1)
 
-	hsvToHex: (hsv) => @rgbToHex(@hsvToRgb(hsv))
+	_hsvToHex: (hsv) => @_rgbToHex(@_hsvToRgb(hsv))
+
+	_hsvToHsl: (hsv) =>
+		if not @_isHsv hsv then throw new Error 'Not a valid HSV object.'
+		computedL = (2 - hsv.s/100) * hsv.v/2
+		satDenom = if computedL < 50 then computedL * 2 else 200 - computedL * 2
+		computedS = hsv.s * hsv.v / satDenom
+		#corrects a divide by 0 error
+		if isNaN computedL then computedS = 0
+
+		hslObj =
+			h: hsv.h
+			s: computedS
+			l: computedL
+
+		return hslObj
+
+	_hslToHsv: (hsl) =>
+		if not @_isHsl hsl then throw new Error 'Not a valid HSL object.'
+		t = hsl.s * (if hsl.l < 50 then hsl.l else 100 - hsl.l)/100
+		computedS = 200 * t / (hsl.l + t)
+		computedV = t + hsl.l
+		#corrects a divide by 0 error
+		if isNaN computedS then computedS = 0
+
+		hsvObj =
+			h: hsl.h
+			s: computedS
+			v: computedV
+
+		return hsvObj
+
 
 	htmlColors:
 		aliceblue: 'F0F8FF'

@@ -1,1 +1,1 @@
-please.meh = new Color('#663399')
+please.Color = (color) -> new Color color
