@@ -38,7 +38,7 @@ class Color
 		return false
 
 	hue: (value) =>
-		if value?
+		if value? and isNumber(value)
 			@__model.h = clamp value 0, 360
 			return this
 		return @__model.h
@@ -46,7 +46,7 @@ class Color
 	h: @::hue
 
 	saturation: (value) =>
-		if value?
+		if value? and isNumber(value)
 			@__model.s = clamp value
 			return this
 		return @__model.s
@@ -54,7 +54,7 @@ class Color
 	s: @::saturation
 
 	value: (value) =>
-		if value?
+		if value? and isNumber(value)
 			@__model.v = clamp value
 			return this
 		return @__model.v
@@ -78,7 +78,7 @@ class Color
 	o: @::alpha
 
 	red: (value) =>
-		if value?
+		if value? and isNumber(value)
 			rgb = @_hsvToRgb @__model
 			rgb.r = clamp value 0, 255
 			@__model = @_rgbToHsv rgb
@@ -86,7 +86,7 @@ class Color
 		return @_hsvToRgb(@__model).r
 
 	green: (value) =>
-		if value?
+		if value? and isNumber(value)
 			rgb = @_hsvToRgb @__model
 			rgb.g = clamp value 0, 255
 			@__model = @_rgbToHsv rgb
@@ -94,7 +94,7 @@ class Color
 		return @_hsvToRgb(@__model).g
 
 	blue: (value) =>
-		if value?
+		if value? and isNumber(value)
 			rgb = @_hsvToRgb @__model
 			rgb.b = clamp value 0, 255
 			@__model = @_rgbToHsv rgb
@@ -129,24 +129,23 @@ class Color
 			return this
 		return @__model
 
-	#TODO: correctly factor this as a getter/setter
-	htmlColor: (value) =>
-		if value? and isString value
-			colorName = value.toLowerCase()
-			return @htmlColors[color] if color in @htmlColors
-			throw new Error 'Not a valid HTML color.'
-			return false
+	getHtmlColor: (value) =>
+		debugger
+		if value? and isString(value)
+			# colorName = value.toLowerCase()
+			if value.toLowerCase() in @_htmlColors then return true
+			# return @_htmlColors[colorName] if colorName in @_htmlColors
+			# throw new Error 'Not a valid HTML color.'
+
+	getHtmlColors: => @_htmlColors
 
 	_detectType: (color) =>
-		# switch color
 		if @_isHsv color then return 'HSV'
 		if @_isHsl color then return 'HSL'
 		if @_isRgb color then return 'RGB'
 		if @_isRgbString color then return 'RGB_STRING'
 		if @_isHex color then return 'HEX'
-		else
-			throw new Error 'Not a valid color type.'
-
+		throw new Error 'Not a valid color type.'
 
 	_rgbToHsv: (rgb) =>
 		if not @_isRgb rgb then throw new Error 'Not a valid RGB object.'
@@ -277,8 +276,7 @@ class Color
 
 		return hsvObj
 
-
-	htmlColors:
+	_htmlColors:
 		aliceblue: 'F0F8FF'
 		antiquewhite: 'FAEBD7'
 		aqua: '00FFFF'
