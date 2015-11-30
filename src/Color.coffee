@@ -39,7 +39,7 @@ class Color
 
 	hue: (value) =>
 		if value? and isNumber(value)
-			@__model.h = clamp value 0, 360
+			@__model.h = clamp value, 0, 360
 			return this
 		return @__model.h
 
@@ -73,7 +73,7 @@ class Color
 	red: (value) =>
 		if value? and isNumber(value)
 			rgb = @_hsvToRgb @__model
-			rgb.r = clamp value 0, 255
+			rgb.r = clamp value, 0, 255
 			@__model = @_rgbToHsv rgb
 			return this
 		return @_hsvToRgb(@__model).r
@@ -81,7 +81,7 @@ class Color
 	green: (value) =>
 		if value? and isNumber(value)
 			rgb = @_hsvToRgb @__model
-			rgb.g = clamp value 0, 255
+			rgb.g = clamp value, 0, 255
 			@__model = @_rgbToHsv rgb
 			return this
 		return @_hsvToRgb(@__model).g
@@ -89,7 +89,7 @@ class Color
 	blue: (value) =>
 		if value? and isNumber(value)
 			rgb = @_hsvToRgb @__model
-			rgb.b = clamp value 0, 255
+			rgb.b = clamp value, 0, 255
 			@__model = @_rgbToHsv rgb
 			return this
 		return @_hsvToRgb(@__model).b
@@ -131,6 +131,8 @@ class Color
 	html: (value) =>
 		@__model = @_hexToHsv @getHtmlColor(value)
 		return this
+
+	getHtmlColors: => @_htmlColors
 
 	_detectType: (color) =>
 		if @_isHsv color then return 'HSV'
