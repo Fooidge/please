@@ -128,7 +128,9 @@ class Color
 			if @_htmlColors[colorName]? then return @_htmlColors[colorName]
 		throw new Error 'Not a valid HTML color.'
 
-	getHtmlColors: => @_htmlColors
+	html: (value) =>
+		@__model = @_hexToHsv @getHtmlColor(value)
+		return this
 
 	_detectType: (color) =>
 		if @_isHsv color then return 'HSV'
