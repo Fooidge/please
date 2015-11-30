@@ -61,7 +61,6 @@ class Color
 
 	brightness: @::value
 
-
 	alpha: (value) =>
 		if value? and isNumber(value)
 			@__model.a = clamp value
@@ -121,6 +120,12 @@ class Color
 			@__model = value
 			return this
 		return @__model
+
+	hex: (value) =>
+		if value?
+			@__model = @_hexToHsv value
+			return this
+		return @_hsvToHex @__model
 
 	getHtmlColor: (value) =>
 		if value?
@@ -235,9 +240,9 @@ class Color
 	_hexToHsv: (hex) => @_rgbToHsv(@_hexToRgb(hex))
 
 	_rgbToHex: (rgb) =>
-		if not @_isRgb rgb then throw new Error 'Not a valid RGB object.'
-		base = "##{1 << 24}#{rgb.r << 16}#{rgb.g << 8}#{rgb.g}"
-		return base.toString(16).slice(1)
+		if not @_isRgb(rgb) then throw new Error 'Not a valid RGB object.'
+		base = rgb.b | (rgb.g << 8) | (rgb.r << 16)
+		return "##{(0x1000000 + base).toString(16).slice(1)}"
 
 	_hsvToHex: (hsv) => @_rgbToHex(@_hsvToRgb(hsv))
 
