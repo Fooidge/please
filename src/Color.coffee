@@ -43,15 +43,13 @@ class Color
 			return this
 		return @__model.h
 
-	h: @::hue
-
 	saturation: (value) =>
 		if value? and isNumber(value)
 			@__model.s = clamp value
 			return this
 		return @__model.s
 
-	s: @::saturation
+	sat: @::saturation
 
 	value: (value) =>
 		if value? and isNumber(value)
@@ -59,11 +57,10 @@ class Color
 			return this
 		return @__model.v
 
-	v: @::value
+	val: @::value
 
 	brightness: @::value
 
-	b: @::value
 
 	alpha: (value) =>
 		if value? and isNumber(value)
@@ -71,11 +68,7 @@ class Color
 			return this
 		return @__model.a
 
-	a: @::alpha
-
 	opacity: @::alpha
-
-	o: @::alpha
 
 	red: (value) =>
 		if value? and isNumber(value)
@@ -130,12 +123,10 @@ class Color
 		return @__model
 
 	getHtmlColor: (value) =>
-		debugger
-		if value? and isString(value)
-			# colorName = value.toLowerCase()
-			if value.toLowerCase() in @_htmlColors then return true
-			# return @_htmlColors[colorName] if colorName in @_htmlColors
-			# throw new Error 'Not a valid HTML color.'
+		if value?
+			colorName = value.toString().toLowerCase()
+			if @_htmlColors[colorName]? then return @_htmlColors[colorName]
+		throw new Error 'Not a valid HTML color.'
 
 	getHtmlColors: => @_htmlColors
 
