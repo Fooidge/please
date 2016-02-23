@@ -24,6 +24,7 @@ please.generateRandom = ->
 	color.hue randomInt(0, 359)
 	color.saturation randomFloat(0, 1.0)
 	color.value randomFloat(0, 1.0)
+	return color
 
 
 please.makeColor = (options = {}) ->

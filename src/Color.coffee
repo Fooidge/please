@@ -118,8 +118,8 @@ class Color
 
 	hslString: =>
 		hsl = @_hsvToHsl @__model
-		return "hsl(#{hsl.h},#{hsl.s},#{hsl.l})" if not @__model.a?
-		return "hsla(#{hsl.h},#{hsl.s},#{hsl.l},#{@__model.a})"
+		return "hsl(#{hsl.h},#{hsl.s * 100}%,#{hsl.l * 100}%)" if not @__model.a?
+		return "hsla(#{hsl.h},#{hsl.s * 100}%,#{hsl.l * 100}%,#{@__model.a})"
 
 	hsv: (value) =>
 		if value? and @_isHsv(value)
@@ -133,15 +133,16 @@ class Color
 			return this
 		return @_hsvToHex @__model
 
+	html: (value) =>
+		@__model = @_hexToHsv @getHtmlColor(value)
+		return this
+
 	getHtmlColor: (value) =>
 		if value?
 			colorName = value.toString().toLowerCase()
 			if @_htmlColors[colorName]? then return @_htmlColors[colorName]
 		throw new Error 'Not a valid HTML color.'
 
-	html: (value) =>
-		@__model = @_hexToHsv @getHtmlColor(value)
-		return this
 
 	getHtmlColors: => @_htmlColors
 
@@ -263,11 +264,12 @@ class Color
 
 	_hsvToHsl: (hsv) =>
 		if not @_isHsv hsv then throw new Error 'Not a valid HSV object.'
-		computedL = (2 - hsv.s/100) * hsv.v/2
-		satDenom = if computedL < 50 then computedL * 2 else 200 - computedL * 2
-		computedS = hsv.s * hsv.v / satDenom
-		#corrects a divide by 0 error
-		if isNaN computedL then computedS = 0
+		computedL = (2 - hsv.s) * hsv.v
+		console.log computedL
+		computedS = hsv.s * hsv.v
+		if computedL <= 1 then computedS = computedS / computedL
+		else computedS = computedS / (2 - computedL)
+		computedL = computedL / 2
 
 		hslObj =
 			h: hsv.h
