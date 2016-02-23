@@ -265,7 +265,6 @@ class Color
 	_hsvToHsl: (hsv) =>
 		if not @_isHsv hsv then throw new Error 'Not a valid HSV object.'
 		computedL = (2 - hsv.s) * hsv.v
-		console.log computedL
 		computedS = hsv.s * hsv.v
 		if computedL <= 1 then computedS = computedS / computedL
 		else computedS = computedS / (2 - computedL)
@@ -280,11 +279,11 @@ class Color
 
 	_hslToHsv: (hsl) =>
 		if not @_isHsl hsl then throw new Error 'Not a valid HSL object.'
-		t = hsl.s * (if hsl.l < 50 then hsl.l else 100 - hsl.l)/100
-		computedS = 200 * t / (hsl.l + t)
-		computedV = t + hsl.l
-		#corrects a divide by 0 error
-		if isNaN computedS then computedS = 0
+		hsl.l *= 2
+		if (hsl.l <= 1) then hsl.s *= hsl.l
+		else hsl.s *= ( 2 - hsl.l)
+		computedV = (hsl.l + hsl.s) / 2
+		computedS = (2 * hsl.s) / (hsl.l + hsl.s)
 
 		hsvObj =
 			h: hsl.h
