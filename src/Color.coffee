@@ -1,14 +1,20 @@
 class Color
 	constructor: (color) ->
-		switch @_detectType color
-			when 'HSV'
-				@__model =
-					h: color.h
-					s: color.s
-					v: color.v
-			when 'HSL' then @__model = @_hslToHsv color
-			when 'RGB' then @__model = @_rgbToHsv color
-			when 'HEX' then @__model = @_hexToHsv color
+		if color?
+			switch @_detectType color
+				when 'HSV'
+					@__model =
+						h: color.h
+						s: color.s
+						v: color.v
+				when 'HSL' then @__model = @_hslToHsv color
+				when 'RGB' then @__model = @_rgbToHsv color
+				when 'HEX' then @__model = @_hexToHsv color
+		else
+			@__model =
+				h: 0
+				s: 0
+				v: 0
 
 	_isHsv: (color) ->
 		return true if isObject(color) and color.h? and color.s? and color.v?
@@ -97,7 +103,7 @@ class Color
 		if value?
 			@__model = @_rgbToHsv value
 			return this
-		return @_hsvToRgb
+		return @_hsvToRgb @__model
 
 	rgbString: =>
 		rgb = @_hsvToRgb @__model
@@ -138,6 +144,15 @@ class Color
 		return this
 
 	getHtmlColors: => @_htmlColors
+
+	#true for white false for black
+	contrast: =>
+		rgb = @rgb()
+		yiqR = rgb.r * 299
+		yiqG = rgb.g * 587
+		yiqB = rgb.b * 114
+		yiq = (yiqR + yiqG + yiqB)/1000
+		if yiq < 128 then return true else return false
 
 	_detectType: (color) =>
 		if @_isHsv color then return 'HSV'
