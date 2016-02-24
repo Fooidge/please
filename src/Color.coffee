@@ -128,7 +128,7 @@ class Color
 		return @__model
 
 	hex: (value) =>
-		if value?
+		if value? and @_isHex(value)
 			@__model = @_hexToHsv value
 			return this
 		return @_hsvToHex @__model
@@ -154,6 +154,14 @@ class Color
 		yiqB = rgb.b * 114
 		yiq = (yiqR + yiqG + yiqB)/1000
 		if yiq < 128 then return true else return false
+
+	mix: (color, amount = 0.5) =>
+		amount = clamp amount, 0, 1
+		remainder = 1 - amount
+		@hue (@hue() * remainder) + (color.hue() * amount)
+		@sat (@sat() + color.sat())/2
+		@val (@val() + color.val())/2
+		return this
 
 	_detectType: (color) =>
 		if @_isHsv color then return 'HSV'
@@ -194,10 +202,11 @@ class Color
 
 		#no saturation case
 		if s is 0
+			computedV = v * 255
 			rgbObj =
-				r: v
-				g: v
-				b: v
+				r: computedV
+				g: computedV
+				b: computedV
 			return rgbObj
 
 		h /= 60
