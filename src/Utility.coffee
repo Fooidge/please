@@ -23,3 +23,10 @@ clamp = (value, min = 0, max = 1) -> Math.max(min, Math.min(value, max))
 randomInt = (min, max) -> Math.floor Math.random() * (max - min + 1) + min
 
 randomFloat = (min, max) -> Math.random() * (max - min) + min
+
+#shallow defaults
+defaults = (defaults = {}, object) ->
+	for key, value of object
+		if object.hasOwnProperty key
+			defaults[key] = object[key]
+	return defaults
