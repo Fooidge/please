@@ -196,7 +196,7 @@ class Color
 
 	_hsvToRgb: (hsv) =>
 		if not @_isHsv hsv then throw new Error 'Not a valid HSV object.'
-		h = hsv.h
+		h = hsv.h % 360
 		s = hsv.s
 		v = hsv.v
 
