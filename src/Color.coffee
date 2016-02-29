@@ -45,13 +45,13 @@ class Color
 
 	hue: (value) =>
 		if value? and _.isNumber(value)
-			@__model.h = _.clamp value, 0, 360
+			@__model.h = Math.abs value % 360
 			return this
 		return @__model.h
 
 	saturation: (value) =>
 		if value? and _.isNumber(value)
-			@__model.s = _.clamp value
+			@__model.s = _.clamp value, 0, 1
 			return this
 		return @__model.s
 
@@ -59,7 +59,7 @@ class Color
 
 	value: (value) =>
 		if value? and _.isNumber(value)
-			@__model.v = _.clamp value
+			@__model.v = _.clamp value, 0, 1
 			return this
 		return @__model.v
 
@@ -69,7 +69,7 @@ class Color
 
 	alpha: (value) =>
 		if value? and _.isNumber(value)
-			@__model.a = _.clamp value
+			@__model.a = _.clamp value, 0, 1
 			return this
 		return @__model.a
 
