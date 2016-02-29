@@ -15,30 +15,30 @@ makeColorDefaults =
 	fillRandom: false
 	colors_returned: 1
 	colorsReturned: 1
-	format: 'hex'
+	format: null
 
 please.generateFromBaseColor = (baseColor) ->
 	color = new Color()
 	base = new Color baseColor
-	color.hue clamp(randomInt(base.hue() - 5, base.hue() + 5), 0, 360)
+	color.hue clamp(_.random(base.hue() - 5, base.hue() + 5), 0, 360)
 	if base.saturation() is 0 then color.saturation 0
-	else color.saturation randomFloat(0.4, 0.85)
-	color.value randomFloat(0.4, 0.85)
+	else color.saturation _.random(0.4, 0.85, true)
+	color.value _.random(0.4, 0.85, true)
 	return color
 
 please.generate = please.generateGolden = ->
 	color = new Color()
-	hue = randomInt(0, 359)
-	color.hue (hue + (hue/PHI) % 360)
-	color.saturation randomFloat(0.4, 0.85)
-	color.value randomFloat(0.4, 0.85)
+	hue = _.random 0, 359
+	color.hue ((hue + (hue/PHI)) % 360)
+	color.saturation _.random(0.4, 0.85, true)
+	color.value _.random(0.4, 0.85, true)
 	return color
 
 please.generateRandom = ->
 	color = new Color()
-	color.hue randomInt(0, 359)
-	color.saturation randomFloat(0, 1.0)
-	color.value randomFloat(0, 1.0)
+	color.hue _.random(0, 359)
+	color.saturation _.random(0, 1.0, true)
+	color.value _.random(0, 1.0, true)
 	return color
 
 deprecationLayer = (options) ->
@@ -64,10 +64,17 @@ please.make_color = (options = {}) ->
 
 please.makeColor = (options = {}) ->
 	#remove deprecation layer after 3 months in the wild
-	opts = deprecationLayer defaults(makeColorDefaults, options)
-	console.log opts
+	opts = deprecationLayer _.defaults(makeColorDefaults, options)
 	colors = []
-	for i in [0..options.colorsReturned] by 1
-		colors[colors.length] = please.generate()
+	for i in [0..opts.colorsReturned] by 1
+		colors[i] = please.generate()
+		switch opts.format.toLowerCase()
+			when 'hex' then colors[i] = colors[i].hex()
+			when 'rgb' then colors[i] = colors[i].rgbString()
+			when 'hsl' then colors[i] = colors[i].hslString()
+			else
+				console.warn 'Unknown format. Defaulting to hex.'
+				colors[i] = colors[i].hex()
+
 
 	return colors

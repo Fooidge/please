@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Please.js</title>
+	<link rel="stylesheet" type="text/css" href="sass/master.css">
+</head>
+<body>
+	<section></section>
+	<section></section>
+	<section></section>
+	<section></section>
+	<section></section>
+</body>
+<script type="text/javascript" src="../dist/please.js"></script>
+<script type="text/javascript">
+	console.log(please);
+	var sections = document.getElementsByTagName('section');
+	bleh = []
+	for (var i = sections.length - 1; i >= 0; i--) {
+		var col = please.generate();
+		bleh.push(col.hue());
+		// console.log(col);
+		sections[i].style.backgroundColor = col.hex();
+	}
+	console.log(bleh);
+</script>
+</html>

@@ -17,49 +17,49 @@ class Color
 				v: 0
 
 	_isHsv: (color) ->
-		return true if isObject(color) and color.h? and color.s? and color.v?
+		return true if _.isObject(color) and color.h? and color.s? and color.v?
 		return false
 
 	_isHsl: (color) ->
-		return true if isObject(color) and color.h? and color.s? and color.l?
+		return true if _.isObject(color) and color.h? and color.s? and color.l?
 		return false
 
 	_isHslString: (color) ->
 		hslTest = /hsl\(s?d{1,3},s?d{1,3}%,s?d{1,3}%s?\)/i
-		return true if isString(color) and hslTest.test(color)
+		return true if _.isString(color) and hslTest.test(color)
 		return false
 
 	_isRgb: (color) ->
-		return true if isObject(color) and color.r? and color.g? and color.b?
+		return true if _.isObject(color) and color.r? and color.g? and color.b?
 		return false
 
 	_isRgbString: (color) ->
 		rgbTest = /rgb\(\s?(\d{1,3},\s?){2}\d{1,3}\s?\)/i
-		return true if isString(color) and rgbTest.test(color)
+		return true if _.isString(color) and rgbTest.test(color)
 		return false
 
 	_isHex: (color) ->
 		hexTest = /^#?(?:[0-9a-f]{3}){1,2}$/i
-		return true if isString(color) and hexTest.test(color)
+		return true if _.isString(color) and hexTest.test(color)
 		return false
 
 	hue: (value) =>
-		if value? and isNumber(value)
-			@__model.h = clamp value, 0, 360
+		if value? and _.isNumber(value)
+			@__model.h = _.clamp value, 0, 360
 			return this
 		return @__model.h
 
 	saturation: (value) =>
-		if value? and isNumber(value)
-			@__model.s = clamp value
+		if value? and _.isNumber(value)
+			@__model.s = _.clamp value
 			return this
 		return @__model.s
 
 	sat: @::saturation
 
 	value: (value) =>
-		if value? and isNumber(value)
-			@__model.v = clamp value
+		if value? and _.isNumber(value)
+			@__model.v = _.clamp value
 			return this
 		return @__model.v
 
@@ -68,33 +68,33 @@ class Color
 	brightness: @::value
 
 	alpha: (value) =>
-		if value? and isNumber(value)
-			@__model.a = clamp value
+		if value? and _.isNumber(value)
+			@__model.a = _.clamp value
 			return this
 		return @__model.a
 
 	opacity: @::alpha
 
 	red: (value) =>
-		if value? and isNumber(value)
+		if value? and _.isNumber(value)
 			rgb = @_hsvToRgb @__model
-			rgb.r = clamp value, 0, 255
+			rgb.r = _.clamp value, 0, 255
 			@__model = @_rgbToHsv rgb
 			return this
 		return @_hsvToRgb(@__model).r
 
 	green: (value) =>
-		if value? and isNumber(value)
+		if value? and _.isNumber(value)
 			rgb = @_hsvToRgb @__model
-			rgb.g = clamp value, 0, 255
+			rgb.g = _.clamp value, 0, 255
 			@__model = @_rgbToHsv rgb
 			return this
 		return @_hsvToRgb(@__model).g
 
 	blue: (value) =>
-		if value? and isNumber(value)
+		if value? and _.isNumber(value)
 			rgb = @_hsvToRgb @__model
-			rgb.b = clamp value, 0, 255
+			rgb.b = _.clamp value, 0, 255
 			@__model = @_rgbToHsv rgb
 			return this
 		return @_hsvToRgb(@__model).b
@@ -156,7 +156,7 @@ class Color
 		if yiq < 128 then return true else return false
 
 	mix: (color, amount = 0.5) =>
-		amount = clamp amount, 0, 1
+		amount = _.clamp amount, 0, 1
 		remainder = 1 - amount
 		@hue (@hue() * remainder) + (color.hue() * amount)
 		@sat (@sat() + color.sat())/2
