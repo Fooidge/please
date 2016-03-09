@@ -43,6 +43,18 @@ class Color
 		return true if _.isString(color) and hexTest.test(color)
 		return false
 
+	_isXyz: (color) ->
+		return true if _.isObject(color) and color.x? and color.y? and color.z?
+		return false
+
+	_isCmy: (color) ->
+		return true if _.isObject(color) and color.c? and color.m? and color.y?
+		return false
+
+	_isCmyk: (color) ->
+		return true if _.isObject(color) and color.c? and color.m? and color.y? and color.k?
+		return false
+
 	hue: (value) =>
 		if value? and _.isNumber(value)
 			@__model.h = Math.abs value % 360
@@ -300,6 +312,100 @@ class Color
 			v: computedV
 
 		return hsvObj
+
+	__xyzForward: (value) ->
+		if value > 0.04045 then return Math.pow (value + 0.055) / 1.055, 2.4
+		return value / 12.92
+
+	_rgbToXyz: (rgb) =>
+		if not @_isRgb rgb then throw new Error 'Not a valid RGB object.'
+
+		r = @__xyzForward rgb.r
+		g = @__xyzForward rgb.g
+		b = @__xyzForward rgb.b
+
+		xyzObj =
+			x: r * 0.4124 + g * 0.3576 + b * 0.1805
+			y: r * 0.2126 + g * 0.7152 + b * 0.0722
+			z: r * 0.0193 + g * 0.1192 + b * 0.9505
+
+		return xyzObj
+
+	__xyzBackward: (value) ->
+		if value > 0.0031308 then return Math.pow(value, (1/2.4)) - 0.055
+		return value * 12.92
+
+	_xyzToRgb: (xyz) =>
+		if not @_isXyz xyz then throw new Error 'Not a valid XYZ object.'
+
+		r = xyz.x * 3.2406 + xyz.y * -1.5372 + xyz.z * -0.4986
+		g = xyz.x * -0.9689 + xyz.y * 1.8758 + xyz.z * 0.0415
+		b = xyz.x * 0.0557 + xyz.y * -0.2040 + xyz.z * 1.057
+
+		rgbObj =
+			r: @__xyzBackward r
+			g: @__xyzBackward g
+			b: @__xyzBackward b
+
+		return rgbObj
+
+	__rgbToCmy: (rgb) ->
+		cmyObj =
+			c: 1 - rgb.r
+			m: 1 - rgb.g
+			y: 1 - rgb.b
+
+		return cmyObj
+
+	__cmyToRgb: (cmy) ->
+		rgbObj =
+			r: 1 - cmy.c
+			g: 1 - cmy.m
+			b: 1 - cmy.y
+
+		return rgbObj
+
+	__cmyToCmyk: (cmy) =>
+		if not @_isCmy cmy then throw new Error 'Not a valid cmy object.'
+		K = 1
+
+		if cmy.x < K then K = cmy.c
+		if cmy.m < K then K = cmy.m
+		if cmy.y < K then K = cmy.y
+
+		if K is 1
+			cmykObj =
+				c: 0
+				m: 0
+				y: 0
+				k: 1
+
+			return cmykObj
+
+		cmykObj =
+			c: (cmy.c - K)/(1 - K)
+			m: (cmy.m - K)/(1 - K)
+			y: (cmy.y - K)/(1 - K)
+			k: K
+
+		return cmykObj
+
+	__cmykToCmy: (cmyk) ->
+		K = cmyk.k
+		cmyObj =
+			c: cmyk.c * (1 - K) + K
+			m: cmyk.m * (1 - K) + K
+			y: cmyk.y * (1 - K) + K
+
+		return cmykObj
+
+	_rgbToCmyk: (rgb) =>
+		if not @_isRgb rgb then throw new Error 'Not a valid rgb object.'
+		return @__cmyToCmyk @__rgbToCmy rgb
+
+	_cmykToRgb: (cmyk) =>
+		if not @_isCmyk cmyk then throw new Error 'Not a valid cmyk object.'
+		return @__cmyToRgb @__cmykToCmy cmyk
 
 	_htmlColors:
 		aliceblue: 'F0F8FF'
