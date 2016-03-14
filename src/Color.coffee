@@ -47,6 +47,10 @@ class Color
 		return true if _.isObject(color) and color.x? and color.y? and color.z?
 		return false
 
+	_isLab: (color) ->
+		return true if _.isObject(color) and color.l? and color.a? and color.b?
+		return false
+
 	_isCmy: (color) ->
 		return true if _.isObject(color) and color.c? and color.m? and color.y?
 		return false
@@ -139,6 +143,12 @@ class Color
 			return this
 		return @__model
 
+	xyz: (value) =>
+		if value? and @_isXyz(value)
+			@__model = @_xyzToHsv value
+			return this
+		return @_hsvToXyz @__model
+
 	hex: (value) =>
 		if value? and @_isHex(value)
 			@__model = @_hexToHsv value
@@ -164,15 +174,26 @@ class Color
 		yiqR = rgb.r * 299
 		yiqG = rgb.g * 587
 		yiqB = rgb.b * 114
-		yiq = (yiqR + yiqG + yiqB)/1000
-		if yiq < 128 then return true else return false
+		yiq = (yiqR + yiqG + yiqB) / 1000
+		if yiq < 128 then return true
+		return false
 
 	mix: (color, amount = 0.5) =>
 		amount = _.clamp amount, 0, 1
 		remainder = 1 - amount
 		@hue (@hue() * remainder) + (color.hue() * amount)
-		@sat (@sat() + color.sat())/2
-		@val (@val() + color.val())/2
+		@sat (@sat() + color.sat()) / 2
+		@val (@val() + color.val()) / 2
+		return this
+
+	lighten: (amount = 0.25) =>
+		white = new Color @_htmlColors.white
+		@mix white, amount
+		return this
+
+	darken: (amount = 0.25) =>
+		black = new Color @_htmlColors.black
+		@mix black, amount
 		return this
 
 	_detectType: (color) =>
@@ -181,6 +202,9 @@ class Color
 		if @_isRgb color then return 'RGB'
 		if @_isRgbString color then return 'RGB_STRING'
 		if @_isHex color then return 'HEX'
+		if @_isXyz color then return 'XYZ'
+		if @_isLab color then return 'LAB'
+		if @_isCmyk color then return 'CMYK'
 		throw new Error 'Not a valid color type.'
 
 	_rgbToHsv: (rgb) =>
@@ -313,6 +337,10 @@ class Color
 
 		return hsvObj
 
+	_hsvToXyz: (hsv) => @_rgbToXyz(@_hsvToRgb(hsv))
+
+	_xyzToHsv: (xyz) => @_rgbToHsv(@_xyzToRgb(xyz))
+
 	__xyzForward: (value) ->
 		if value > 0.04045 then return Math.pow (value + 0.055) / 1.055, 2.4
 		return value / 12.92
@@ -348,6 +376,51 @@ class Color
 			b: @__xyzBackward b
 
 		return rgbObj
+
+	__labForward: (value) ->
+		if value > 0.008856 then return Math.pow x, (1 / 3)
+		return (7.787 * x) + (16 / 116)
+
+	_xyzToLab: (xyz) =>
+		if not @_isXyz xyz then throw new Error 'Not a valid XYZ object.'
+		# CIE-L*ab D65/2' 1931
+		x = @__labForward xyz.x * 0.9504285
+		y = @__labForward xyz.y
+		z = @__labForward xyz.z * 1.0889
+
+		labObj =
+			l: ((116 * y) - 16) / 100 #[0-100]
+			a: ((500 * (x - y)) + 128) / 255 #[-128-127]
+			b: ((200 * (y - z)) + 128) / 255 #[-128-127]
+
+		return labObj
+
+	__labBackward: (value) ->
+		thirded = Math.pow value, 3
+		if thirded > 0.008856 then return thirded
+		return (value - 16 / 116) / 7.787
+
+	_labToXyz: (lab) =>
+		if not @_isLab lab then throw new Error 'Not a valid LAB object'
+
+		l = lab.l * 100
+		a = (lab.a * 255) - 128
+		b = (lab.b * 255) - 128
+
+		y = (l + 16) / 116
+		x = a / 500 + y
+		z = y - b / 200
+
+		xyzObj =
+			x: @__labBackward(x) * 0.9504285
+			y: @__labBackward(y)
+			z: @__labBackward(z) * 1.0889
+
+		return xyzObj
+
+	_labToHsv: (lab) => @_xyzToHsv(@_labToXyz(lab))
+
+	_hsvToLab: (hsv) => @_xyzToLab(@_hsvToXyz(hsv))
 
 	__rgbToCmy: (rgb) ->
 		cmyObj =
@@ -406,6 +479,10 @@ class Color
 	_cmykToRgb: (cmyk) =>
 		if not @_isCmyk cmyk then throw new Error 'Not a valid cmyk object.'
 		return @__cmyToRgb @__cmykToCmy cmyk
+
+	_cmykToHsv: (cmyk) => @_rgbToHsv(@_cmykToRgb(cmyk))
+
+	_hsvToCmyk: (hsv) => @_rgbToCmyk(@_hsvToRgb(hsv))
 
 	_htmlColors:
 		aliceblue: 'F0F8FF'
