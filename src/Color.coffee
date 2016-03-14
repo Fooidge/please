@@ -10,6 +10,9 @@ class Color
 				when 'HSL' then @__model = @_hslToHsv color
 				when 'RGB' then @__model = @_rgbToHsv color
 				when 'HEX' then @__model = @_hexToHsv color
+				when 'XYZ' then @__model = @_xyzToHsv color
+				when 'LAB' then @__model = @_labToHsv color
+				when 'CMYK' then @__model = @_cmykToHsv color
 		else
 			@__model =
 				h: 0
