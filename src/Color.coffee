@@ -19,6 +19,17 @@ class Color
 				s: 0
 				v: 0
 
+	_detectType: (color) =>
+		if @_isHsv color then return 'HSV'
+		if @_isHsl color then return 'HSL'
+		if @_isRgb color then return 'RGB'
+		if @_isRgbString color then return 'RGB_STRING'
+		if @_isHex color then return 'HEX'
+		if @_isXyz color then return 'XYZ'
+		if @_isLab color then return 'LAB'
+		if @_isCmyk color then return 'CMYK'
+		throw new Error 'Not a valid color type.'
+
 	_isHsv: (color) ->
 		return true if _.isObject(color) and color.h? and color.s? and color.v?
 		return false
@@ -126,8 +137,8 @@ class Color
 
 	rgbString: =>
 		rgb = @_hsvToRgb @__model
-		return "rgb(#{rgb.r},#{rgb.g},#{rgb.b})" if not @__model.a?
-		return "rgba(#{rgb.r},#{rgb.g},#{rgb.b},#{@__model.a})"
+		return "rgb(#{Math.round rgb.r},#{Math.round rgb.g},#{Math.round rgb.b})" if not @__model.a?
+		return "rgba(#{Math.round rgb.r},#{Math.round rgb.g},#{Math.round rgb.b},#{@__model.a})"
 
 	hsl: (value) =>
 		if value?
@@ -181,34 +192,31 @@ class Color
 		if yiq < 128 then return true
 		return false
 
+	#cmyk style mixing
 	mix: (color, amount = 0.5) =>
+		cmyk = @_hsvToCmyk @__model
+		mixer = @_hsvToCmyk color
 		amount = _.clamp amount, 0, 1
 		remainder = 1 - amount
-		@hue (@hue() * remainder) + (color.hue() * amount)
-		@sat (@sat() + color.sat()) / 2
-		@val (@val() + color.val()) / 2
+
+		result =
+			c: (cmyk.c * remainder) + (mixer.c * amount)
+			m: (cmyk.m * remainder) + (mixer.m * amount)
+			y: (cmyk.y * remainder) + (mixer.y * amount)
+			k: (cmyk.k * remainder) + (mixer.k * amount)
+
+		@__model = @_cmykToHsv result
 		return this
 
 	lighten: (amount = 0.25) =>
 		white = new Color @_htmlColors.white
-		@mix white, amount
+		@mix white.hsv(), amount
 		return this
 
 	darken: (amount = 0.25) =>
 		black = new Color @_htmlColors.black
-		@mix black, amount
+		@mix black.hsv(), amount
 		return this
-
-	_detectType: (color) =>
-		if @_isHsv color then return 'HSV'
-		if @_isHsl color then return 'HSL'
-		if @_isRgb color then return 'RGB'
-		if @_isRgbString color then return 'RGB_STRING'
-		if @_isHex color then return 'HEX'
-		if @_isXyz color then return 'XYZ'
-		if @_isLab color then return 'LAB'
-		if @_isCmyk color then return 'CMYK'
-		throw new Error 'Not a valid color type.'
 
 	_rgbToHsv: (rgb) =>
 		if not @_isRgb rgb then throw new Error 'Not a valid RGB object.'
@@ -473,7 +481,7 @@ class Color
 			m: cmyk.m * (1 - K) + K
 			y: cmyk.y * (1 - K) + K
 
-		return cmykObj
+		return cmyObj
 
 	_rgbToCmyk: (rgb) =>
 		if not @_isRgb rgb then throw new Error 'Not a valid rgb object.'

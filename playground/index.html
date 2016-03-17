@@ -4,12 +4,15 @@
 	<title>Please Test</title>
 </head>
 <body>
-<div id="test" style="height: 100px; width: 100px; background-color: red;"></div>
+<div id="test" style="height: 100px; width: 100px;"></div>
 </body>
 <script type="text/javascript" src="../dist/please.js"></script>
 <script type="text/javascript">
 	var test = document.getElementById('test');
 	var foo = please.Color('#0000FF');
 	var bar = please.Color('#FFFF00');
+	var black = please.Color('#000');
+	var white = please.Color('#FFF');
+	test.style.backgroundColor = white.rgbString();
 </script>
 </html>
