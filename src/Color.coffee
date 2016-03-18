@@ -136,9 +136,12 @@ class Color
 		return @_hsvToRgb @__model
 
 	rgbString: =>
-		rgb = @_hsvToRgb @__model
-		return "rgb(#{Math.round rgb.r},#{Math.round rgb.g},#{Math.round rgb.b})" if not @__model.a?
-		return "rgba(#{Math.round rgb.r},#{Math.round rgb.g},#{Math.round rgb.b},#{@__model.a})"
+		rgb = @rgb()
+		r = Math.round rgb.r
+		g = Math.round rgb.g
+		b = Math.round rgb.b
+		return "rgb(#{r},#{g},#{b})" if not @__model.a?
+		return "rgba(#{r},#{g},#{b},#{@__model.a})"
 
 	hsl: (value) =>
 		if value?
@@ -148,8 +151,11 @@ class Color
 
 	hslString: =>
 		hsl = @_hsvToHsl @__model
-		return "hsl(#{hsl.h},#{hsl.s * 100}%,#{hsl.l * 100}%)" if not @__model.a?
-		return "hsla(#{hsl.h},#{hsl.s * 100}%,#{hsl.l * 100}%,#{@__model.a})"
+		h = hsl.h
+		s = hsl.s * 100
+		l = hsl.l * 100
+		return "hsl(#{h},#{s}%,#{l}%)" if not @__model.a?
+		return "hsla(#{h},#{s}%,#{l}%,#{@__model.a})"
 
 	hsv: (value) =>
 		if value? and @_isHsv(value)
