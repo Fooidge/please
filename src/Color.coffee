@@ -192,6 +192,40 @@ class Color
 		if yiq < 128 then return true
 		return false
 
+	_reflectance: (absorbtion) -> 1 + absorbtion - Math.sqrt(Math.pow(absorbtion, 2) + (2 * absorbtion))
+	_absorbance: (channel) -> Math.pow((1 - channel), 2) / (2 * channel)
+	_kubelkaMunk: (color) ->
+		rgb = color.rgb()
+		red = if rgb.r is 0 then 0.00001 else rgb.r / 255
+		green = if rgb.g is 0 then 0.00001 else rgb.g / 255
+		blue = if rgb.b is 0 then 0.00001 else rgb.b / 255
+		absorbptionObj =
+			A_R: @_absorbance red
+			A_G: @_absorbance green
+			A_B: @_absorbance blue
+
+		return absorbptionObj
+
+
+	KM: (color, amount = 0.5) =>
+		amount = _.clamp amount, 0, 1
+		remainder = 1 - amount
+		model = @_kubelkaMunk @
+		mixer = @_kubelkaMunk color
+		result =
+			A_R: (model.A_R * remainder) + (mixer.A_R * amount)
+			A_G: (model.A_G * remainder) + (mixer.A_G * amount)
+			A_B: (model.A_B * remainder) + (mixer.A_B * amount)
+
+		rgbObj =
+			r: @_reflectance(result.A_R) * 255
+			g: @_reflectance(result.A_G) * 255
+			b: @_reflectance(result.A_B) * 255
+
+		@rgb rgbObj
+
+		return this
+
 	#cmyk style mixing
 	mix: (color, amount = 0.5) =>
 		cmyk = @_hsvToCmyk @__model
@@ -208,12 +242,12 @@ class Color
 		@__model = @_cmykToHsv result
 		return this
 
-	lighten: (amount = 0.25) =>
+	lighten: (amount = 0.1) =>
 		white = new Color @_htmlColors.white
 		@mix white.hsv(), amount
 		return this
 
-	darken: (amount = 0.25) =>
+	darken: (amount = 0.1) =>
 		black = new Color @_htmlColors.black
 		@mix black.hsv(), amount
 		return this
