@@ -1,3 +1,7 @@
+Color = require './Color.coffee'
+
+please = {}
+
 please.Color = (color) -> new Color color
 
 PHI = 0.618033988749895
@@ -91,3 +95,5 @@ please.make_scheme = (options = {}) ->
 please.makeScheme = (options = {}) ->
 	scheme = []
 	return scheme
+
+console.log please.Color('#fff').rgb()

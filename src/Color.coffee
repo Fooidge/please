@@ -1,3 +1,12 @@
+# _ = require 'lodash'
+
+`import {
+	isObject,
+	isString,
+	isNumber,
+	clamp,
+} from 'lodash'`
+
 class Color
 	constructor: (color) ->
 		if color?
