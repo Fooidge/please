@@ -134,7 +134,9 @@ export default class Color {
 		return this.__model.s;
 	}
 
-	// sat = this.prototype.saturation;
+	sat(value) {
+		return this.saturation(value);
+	}
 
 	value(value) {
 		if ((value != null) && isNumber(value)) {
@@ -144,9 +146,13 @@ export default class Color {
 		return this.__model.v;
 	}
 
-	// val = this.prototype.value;
+	val(value) {
+		return this.value(value);
+	}
 
-	// brightness = this.prototype.value;
+	brightness(value) {
+		return this.value(value);
+	}
 
 	alpha(value) {
 		if ((value != null) && isNumber(value)) {
@@ -156,7 +162,9 @@ export default class Color {
 		return this.__model.a;
 	}
 
-	// opacity = this.prototype.alpha;
+	opacity(value) {
+		return this.alpha(value);
+	}
 
 	red(value) {
 		if ((value != null) && isNumber(value)) {
@@ -670,9 +678,13 @@ export default class Color {
 		return this.__cmyToRgb(this.__cmykToCmy(cmyk));
 	}
 
-	_cmykToHsv(cmyk) { return this._rgbToHsv(this._cmykToRgb(cmyk)); }
+	_cmykToHsv(cmyk) {
+		return this._rgbToHsv(this._cmykToRgb(cmyk));
+	}
 
-	_hsvToCmyk(hsv) { return this._rgbToCmyk(this._hsvToRgb(hsv)); }
+	_hsvToCmyk(hsv) {
+		return this._rgbToCmyk(this._hsvToRgb(hsv));
+	}
 
 };
 
