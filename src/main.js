@@ -26,7 +26,7 @@ let makeColorDefaults = {
 	fullRandom: false,
 	colors_returned: 1,
 	colorsReturned: 1,
-	format: null
+	format: 'hex'
 };
 
 please.generateFromBaseColor = function(baseColor) {
@@ -89,9 +89,15 @@ please.makeColor = function(options = {}) {
 		colors[i] = please.generate();
 		//remove overwrites after 3 months in the wild
 		//overwrite values if option exists to
-		if ((opts.hue != null) && isNumber(opts.hue)) { colors[i].hue(opts.hue); }
-		if ((opts.saturation != null) && isNumber(opts.saturation)) { colors[i].saturation(opts.saturation); }
-		if ((opts.value != null) && isNumber(opts.value)) { colors[i].value(opts.value); }
+		if ((opts.hue != null) && isNumber(opts.hue)) {
+			colors[i].hue(opts.hue);
+		}
+		if ((opts.saturation != null) && isNumber(opts.saturation)) {
+			colors[i].saturation(opts.saturation);
+		}
+		if ((opts.value != null) && isNumber(opts.value)) {
+			colors[i].value(opts.value);
+		}
 		switch (opts.format.toLowerCase()) {
 			case 'hex': colors[i] = colors[i].hex(); break;
 			case 'rgb': colors[i] = colors[i].rgbString(); break;
