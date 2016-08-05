@@ -2,16 +2,13 @@
   "name": "please",
   "version": "0.0.0",
   "description": "color toolkit",
-  "main": "dist/please.min.js",
+  "main": "dist/modules/main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Jordan Checkman",
   "license": "ISC",
   "devDependencies": {
-    "babel-core": "^6.11.4",
-    "babel-loader": "^6.2.4",
-    "babel-preset-es2015": "^6.9.0",
     "coffee-loader": "^0.7.2",
     "coffee-script": "^1.10.0",
     "gulp": "^3.9.1",
@@ -32,14 +29,10 @@
     "karma-safari-launcher": "^0.1.1",
     "merge-stream": "^1.0.0",
     "path": "^0.12.7",
-    "webpack": "^1.13.1"
+    "webpack": "^1.13.1",
+    "webpack-stream": "^3.2.0"
   },
   "dependencies": {
     "lodash": "^4.14.1"
-  },
-  "babel": {
-    "presets": [
-      "es2015"
-    ]
   }
 }

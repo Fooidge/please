@@ -1,9 +1,10 @@
-import webpack from 'webpack';
-import path from 'path';
+// import webpack from 'webpack';
+// import path from 'path';
+var webpack = require('webpack');
+var path = require('path');
+var PROD = JSON.parse(process.env.PROD_ENV || '0');
 
-let PROD = JSON.parse(process.env.PROD_ENV || '0');
-
-export default {
+module.exports = {
 	entry: ['./src/index.coffee'],
 	output: {
 		path: path.resolve('./dist'),
