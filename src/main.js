@@ -1,5 +1,9 @@
-import _ from 'lodash';
-import Color from './Color.coffee';
+import {
+	random,
+	isNumber,
+	defaults
+} from 'lodash';
+import Color from './Color';
 
 
 let please = {};
@@ -28,27 +32,27 @@ let makeColorDefaults = {
 please.generateFromBaseColor = function(baseColor) {
 	let color = new Color();
 	let base = new Color(baseColor);
-	color.hue(clamp(_.random(base.hue() - 5, base.hue() + 5), 0, 360));
+	color.hue(clamp(random(base.hue() - 5, base.hue() + 5), 0, 360));
 	if (base.saturation() === 0) { color.saturation(0);
-	} else { color.saturation(_.random(0.4, 0.85, true)); }
-	color.value(_.random(0.4, 0.85, true));
+	} else { color.saturation(random(0.4, 0.85, true)); }
+	color.value(random(0.4, 0.85, true));
 	return color;
 };
 
 please.generate = please.generateGolden = function() {
 	let color = new Color();
-	let hue = _.random(0, 359);
+	let hue = random(0, 359);
 	color.hue(((hue + (hue/PHI)) % 360));
-	color.saturation(_.random(0.4, 0.85, true));
-	color.value(_.random(0.4, 0.85, true));
+	color.saturation(random(0.4, 0.85, true));
+	color.value(random(0.4, 0.85, true));
 	return color;
 };
 
 please.generateRandom = function() {
 	let color = new Color();
-	color.hue(_.random(0, 359));
-	color.saturation(_.random(0, 1.0, true));
-	color.value(_.random(0, 1.0, true));
+	color.hue(random(0, 359));
+	color.saturation(random(0, 1.0, true));
+	color.value(random(0, 1.0, true));
 	return color;
 };
 
@@ -79,7 +83,7 @@ please.make_color = function(options = {}) {
 
 please.makeColor = function(options = {}) {
 	//remove deprecationLayer after 3 months in the wild
-	let opts = deprecationLayer(_.defaults(makeColorDefaults, options));
+	let opts = deprecationLayer(defaults(makeColorDefaults, options));
 	let colors = [];
 	let iterable = __range__(0, opts.colorsReturned, true);
 	for (let j = 0; j < iterable.length; j++) {
@@ -87,9 +91,9 @@ please.makeColor = function(options = {}) {
 		colors[i] = please.generate();
 		//remove overwrites after 3 months in the wild
 		//overwrite values if option exists to
-		if ((opts.hue != null) && _.isNumber(opts.hue)) { colors[i].hue(opts.hue); }
-		if ((opts.saturation != null) && _.isNumber(opts.saturation)) { colors[i].saturation(opts.saturation); }
-		if ((opts.value != null) && _.isNumber(opts.value)) { colors[i].value(opts.value); }
+		if ((opts.hue != null) && isNumber(opts.hue)) { colors[i].hue(opts.hue); }
+		if ((opts.saturation != null) && isNumber(opts.saturation)) { colors[i].saturation(opts.saturation); }
+		if ((opts.value != null) && isNumber(opts.value)) { colors[i].value(opts.value); }
 		switch (opts.format.toLowerCase()) {
 			case 'hex': colors[i] = colors[i].hex(); break;
 			case 'rgb': colors[i] = colors[i].rgbString(); break;

@@ -1,4 +1,4 @@
-import please from './main.coffee';
+import please from './main';
 
 (function() {
 	if (typeof define === 'function' && define.amd) { define(please);

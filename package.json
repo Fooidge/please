@@ -21,7 +21,7 @@
     "karma-jasmine": "^0.3.7",
     "karma-safari-launcher": "^0.1.1",
     "path": "^0.12.7",
-    "webpack": "^1.13.1",
+    "webpack": "^1.13.1"
   },
   "dependencies": {
     "lodash": "^4.14.1"
