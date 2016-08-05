@@ -85,9 +85,7 @@ please.makeColor = function(options = {}) {
 	//remove deprecationLayer after 3 months in the wild
 	let opts = deprecationLayer(defaults(makeColorDefaults, options));
 	let colors = [];
-	let iterable = __range__(0, opts.colorsReturned, true);
-	for (let j = 0; j < iterable.length; j++) {
-		let i = iterable[j];
+	for (let i = 0; i < opts.colorsReturned; i++) {
 		colors[i] = please.generate();
 		//remove overwrites after 3 months in the wild
 		//overwrite values if option exists to
@@ -116,12 +114,3 @@ please.makeScheme = function(options = {}) {
 	let scheme = [];
 	return scheme;
 };
-function __range__(left, right, inclusive) {
-  let range = [];
-  let ascending = left < right;
-  let end = !inclusive ? right : ascending ? right + 1 : right - 1;
-  for (let i = left; ascending ? i < end : i > end; ascending ? i++ : i--) {
-    range.push(i);
-  }
-  return range;
-}
