@@ -51,15 +51,31 @@
 /* 1 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;var please;
+
+	please = __webpack_require__(2);
+
+	(function() {
+	  if (true) {
+	    !(__WEBPACK_AMD_DEFINE_FACTORY__ = (please), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.call(exports, __webpack_require__, exports, module)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	  } else if (typeof module === 'object' && module.exports) {
+	    module.exports = please;
+	  }
+	  return this.please = please;
+	})();
+
+
+/***/ },
+/* 2 */
+/***/ function(module, exports, __webpack_require__) {
 
 	var Color, PHI, deprecationLayer, makeColorDefaults, please;
 
-	Color = __webpack_require__(2);
+	Color = __webpack_require__(3);
 
 	please = {};
 
-	please.Color = function (color) {
+	please.Color = function(color) {
 	  return new Color(color);
 	};
 
@@ -81,7 +97,7 @@
 	  format: null
 	};
 
-	please.generateFromBaseColor = function (baseColor) {
+	please.generateFromBaseColor = function(baseColor) {
 	  var base, color;
 	  color = new Color();
 	  base = new Color(baseColor);
@@ -95,17 +111,17 @@
 	  return color;
 	};
 
-	please.generate = please.generateGolden = function () {
+	please.generate = please.generateGolden = function() {
 	  var color, hue;
 	  color = new Color();
 	  hue = _.random(0, 359);
-	  color.hue((hue + hue / PHI) % 360);
+	  color.hue((hue + (hue / PHI)) % 360);
 	  color.saturation(_.random(0.4, 0.85, true));
 	  color.value(_.random(0.4, 0.85, true));
 	  return color;
 	};
 
-	please.generateRandom = function () {
+	please.generateRandom = function() {
 	  var color;
 	  color = new Color();
 	  color.hue(_.random(0, 359));
@@ -114,7 +130,7 @@
 	  return color;
 	};
 
-	deprecationLayer = function deprecationLayer(options) {
+	deprecationLayer = function(options) {
 	  if (options.base_color !== makeColorDefaults.baseColor) {
 	    console.warn('The option base_color is deprecated and will be removed soon. Use baseColor instead.');
 	    options.baseColor = options.base_color;
@@ -130,7 +146,7 @@
 	  return options;
 	};
 
-	please.make_color = function (options) {
+	please.make_color = function(options) {
 	  if (options == null) {
 	    options = {};
 	  }
@@ -138,7 +154,7 @@
 	  please.makeColor(options);
 	};
 
-	please.makeColor = function (options) {
+	please.makeColor = function(options) {
 	  var colors, i, j, opts, ref;
 	  if (options == null) {
 	    options = {};
@@ -147,13 +163,13 @@
 	  colors = [];
 	  for (i = j = 0, ref = opts.colorsReturned; j <= ref; i = j += 1) {
 	    colors[i] = please.generate();
-	    if (opts.hue != null && _.isNumber(opts.hue)) {
+	    if ((opts.hue != null) && _.isNumber(opts.hue)) {
 	      colors[i].hue(opts.hue);
 	    }
-	    if (opts.saturation != null && _.isNumber(opts.saturation)) {
+	    if ((opts.saturation != null) && _.isNumber(opts.saturation)) {
 	      colors[i].saturation(opts.saturation);
 	    }
-	    if (opts.value != null && _.isNumber(opts.value)) {
+	    if ((opts.value != null) && _.isNumber(opts.value)) {
 	      colors[i].value(opts.value);
 	    }
 	    switch (opts.format.toLowerCase()) {
@@ -174,7 +190,7 @@
 	  return colors;
 	};
 
-	please.make_scheme = function (options) {
+	please.make_scheme = function(options) {
 	  if (options == null) {
 	    options = {};
 	  }
@@ -182,7 +198,7 @@
 	  please.makeScheme(options);
 	};
 
-	please.makeScheme = function (options) {
+	please.makeScheme = function(options) {
 	  var scheme;
 	  if (options == null) {
 	    options = {};
@@ -191,24 +207,19 @@
 	  return scheme;
 	};
 
-	console.log(please.Color('#fff').rgb());
+	module.exports = please;
+
 
 /***/ },
-/* 2 */
+/* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	var Color, _,
+	  bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
-	var _lodash = __webpack_require__(3);
+	_ = __webpack_require__(4);
 
-	var Color,
-	    bind = function bind(fn, me) {
-	  return function () {
-	    return fn.apply(me, arguments);
-	  };
-	};
-
-	Color = function () {
+	module.exports = Color = (function() {
 	  function Color(color) {
 	    this._hsvToCmyk = bind(this._hsvToCmyk, this);
 	    this._cmykToHsv = bind(this._cmykToHsv, this);
@@ -289,7 +300,7 @@
 	    }
 	  }
 
-	  Color.prototype._detectType = function (color) {
+	  Color.prototype._detectType = function(color) {
 	    if (this._isHsv(color)) {
 	      return 'HSV';
 	    }
@@ -317,21 +328,21 @@
 	    throw new Error('Not a valid color type.');
 	  };
 
-	  Color.prototype._isHsv = function (color) {
-	    if (_.isObject(color) && color.h != null && color.s != null && color.v != null) {
+	  Color.prototype._isHsv = function(color) {
+	    if (_.isObject(color) && (color.h != null) && (color.s != null) && (color.v != null)) {
 	      return true;
 	    }
 	    return false;
 	  };
 
-	  Color.prototype._isHsl = function (color) {
-	    if (_.isObject(color) && color.h != null && color.s != null && color.l != null) {
+	  Color.prototype._isHsl = function(color) {
+	    if (_.isObject(color) && (color.h != null) && (color.s != null) && (color.l != null)) {
 	      return true;
 	    }
 	    return false;
 	  };
 
-	  Color.prototype._isHslString = function (color) {
+	  Color.prototype._isHslString = function(color) {
 	    var hslTest;
 	    hslTest = /hsl\(s?d{1,3},s?d{1,3}%,s?d{1,3}%s?\)/i;
 	    if (_.isString(color) && hslTest.test(color)) {
@@ -340,14 +351,14 @@
 	    return false;
 	  };
 
-	  Color.prototype._isRgb = function (color) {
-	    if (_.isObject(color) && color.r != null && color.g != null && color.b != null) {
+	  Color.prototype._isRgb = function(color) {
+	    if (_.isObject(color) && (color.r != null) && (color.g != null) && (color.b != null)) {
 	      return true;
 	    }
 	    return false;
 	  };
 
-	  Color.prototype._isRgbString = function (color) {
+	  Color.prototype._isRgbString = function(color) {
 	    var rgbTest;
 	    rgbTest = /rgb\(\s?(\d{1,3},\s?){2}\d{1,3}\s?\)/i;
 	    if (_.isString(color) && rgbTest.test(color)) {
@@ -356,7 +367,7 @@
 	    return false;
 	  };
 
-	  Color.prototype._isHex = function (color) {
+	  Color.prototype._isHex = function(color) {
 	    var hexTest;
 	    hexTest = /^#?(?:[0-9a-f]{3}){1,2}$/i;
 	    if (_.isString(color) && hexTest.test(color)) {
@@ -365,44 +376,44 @@
 	    return false;
 	  };
 
-	  Color.prototype._isXyz = function (color) {
-	    if (_.isObject(color) && color.x != null && color.y != null && color.z != null) {
+	  Color.prototype._isXyz = function(color) {
+	    if (_.isObject(color) && (color.x != null) && (color.y != null) && (color.z != null)) {
 	      return true;
 	    }
 	    return false;
 	  };
 
-	  Color.prototype._isLab = function (color) {
-	    if (_.isObject(color) && color.l != null && color.a != null && color.b != null) {
+	  Color.prototype._isLab = function(color) {
+	    if (_.isObject(color) && (color.l != null) && (color.a != null) && (color.b != null)) {
 	      return true;
 	    }
 	    return false;
 	  };
 
-	  Color.prototype._isCmy = function (color) {
-	    if (_.isObject(color) && color.c != null && color.m != null && color.y != null) {
+	  Color.prototype._isCmy = function(color) {
+	    if (_.isObject(color) && (color.c != null) && (color.m != null) && (color.y != null)) {
 	      return true;
 	    }
 	    return false;
 	  };
 
-	  Color.prototype._isCmyk = function (color) {
-	    if (_.isObject(color) && color.c != null && color.m != null && color.y != null && color.k != null) {
+	  Color.prototype._isCmyk = function(color) {
+	    if (_.isObject(color) && (color.c != null) && (color.m != null) && (color.y != null) && (color.k != null)) {
 	      return true;
 	    }
 	    return false;
 	  };
 
-	  Color.prototype.hue = function (value) {
-	    if (value != null && _.isNumber(value)) {
+	  Color.prototype.hue = function(value) {
+	    if ((value != null) && _.isNumber(value)) {
 	      this.__model.h = Math.abs(value % 360);
 	      return this;
 	    }
 	    return this.__model.h;
 	  };
 
-	  Color.prototype.saturation = function (value) {
-	    if (value != null && _.isNumber(value)) {
+	  Color.prototype.saturation = function(value) {
+	    if ((value != null) && _.isNumber(value)) {
 	      this.__model.s = _.clamp(value, 0, 1);
 	      return this;
 	    }
@@ -411,8 +422,8 @@
 
 	  Color.prototype.sat = Color.prototype.saturation;
 
-	  Color.prototype.value = function (value) {
-	    if (value != null && _.isNumber(value)) {
+	  Color.prototype.value = function(value) {
+	    if ((value != null) && _.isNumber(value)) {
 	      this.__model.v = _.clamp(value, 0, 1);
 	      return this;
 	    }
@@ -423,8 +434,8 @@
 
 	  Color.prototype.brightness = Color.prototype.value;
 
-	  Color.prototype.alpha = function (value) {
-	    if (value != null && _.isNumber(value)) {
+	  Color.prototype.alpha = function(value) {
+	    if ((value != null) && _.isNumber(value)) {
 	      this.__model.a = _.clamp(value, 0, 1);
 	      return this;
 	    }
@@ -433,9 +444,9 @@
 
 	  Color.prototype.opacity = Color.prototype.alpha;
 
-	  Color.prototype.red = function (value) {
+	  Color.prototype.red = function(value) {
 	    var rgb;
-	    if (value != null && _.isNumber(value)) {
+	    if ((value != null) && _.isNumber(value)) {
 	      rgb = this._hsvToRgb(this.__model);
 	      rgb.r = _.clamp(value, 0, 255);
 	      this.__model = this._rgbToHsv(rgb);
@@ -444,9 +455,9 @@
 	    return this._hsvToRgb(this.__model).r;
 	  };
 
-	  Color.prototype.green = function (value) {
+	  Color.prototype.green = function(value) {
 	    var rgb;
-	    if (value != null && _.isNumber(value)) {
+	    if ((value != null) && _.isNumber(value)) {
 	      rgb = this._hsvToRgb(this.__model);
 	      rgb.g = _.clamp(value, 0, 255);
 	      this.__model = this._rgbToHsv(rgb);
@@ -455,9 +466,9 @@
 	    return this._hsvToRgb(this.__model).g;
 	  };
 
-	  Color.prototype.blue = function (value) {
+	  Color.prototype.blue = function(value) {
 	    var rgb;
-	    if (value != null && _.isNumber(value)) {
+	    if ((value != null) && _.isNumber(value)) {
 	      rgb = this._hsvToRgb(this.__model);
 	      rgb.b = _.clamp(value, 0, 255);
 	      this.__model = this._rgbToHsv(rgb);
@@ -466,7 +477,7 @@
 	    return this._hsvToRgb(this.__model).b;
 	  };
 
-	  Color.prototype.rgb = function (value) {
+	  Color.prototype.rgb = function(value) {
 	    if (value != null) {
 	      this.__model = this._rgbToHsv(value);
 	      return this;
@@ -474,7 +485,7 @@
 	    return this._hsvToRgb(this.__model);
 	  };
 
-	  Color.prototype.rgbString = function () {
+	  Color.prototype.rgbString = function() {
 	    var b, g, r, rgb;
 	    rgb = this.rgb();
 	    r = Math.round(rgb.r);
@@ -486,7 +497,7 @@
 	    return "rgba(" + r + "," + g + "," + b + "," + this.__model.a + ")";
 	  };
 
-	  Color.prototype.hsl = function (value) {
+	  Color.prototype.hsl = function(value) {
 	    if (value != null) {
 	      this.__model = this._hslToHsv(value);
 	      return this;
@@ -494,7 +505,7 @@
 	    return this._hsvToHsl(this.__model);
 	  };
 
-	  Color.prototype.hslString = function () {
+	  Color.prototype.hslString = function() {
 	    var h, hsl, l, s;
 	    hsl = this._hsvToHsl(this.__model);
 	    h = hsl.h;
@@ -506,36 +517,36 @@
 	    return "hsla(" + h + "," + s + "%," + l + "%," + this.__model.a + ")";
 	  };
 
-	  Color.prototype.hsv = function (value) {
-	    if (value != null && this._isHsv(value)) {
+	  Color.prototype.hsv = function(value) {
+	    if ((value != null) && this._isHsv(value)) {
 	      this.__model = value;
 	      return this;
 	    }
 	    return this.__model;
 	  };
 
-	  Color.prototype.xyz = function (value) {
-	    if (value != null && this._isXyz(value)) {
+	  Color.prototype.xyz = function(value) {
+	    if ((value != null) && this._isXyz(value)) {
 	      this.__model = this._xyzToHsv(value);
 	      return this;
 	    }
 	    return this._hsvToXyz(this.__model);
 	  };
 
-	  Color.prototype.hex = function (value) {
-	    if (value != null && this._isHex(value)) {
+	  Color.prototype.hex = function(value) {
+	    if ((value != null) && this._isHex(value)) {
 	      this.__model = this._hexToHsv(value);
 	      return this;
 	    }
 	    return this._hsvToHex(this.__model);
 	  };
 
-	  Color.prototype.html = function (value) {
+	  Color.prototype.html = function(value) {
 	    this.__model = this._hexToHsv(this.getHtmlColor(value));
 	    return this;
 	  };
 
-	  Color.prototype.getHtmlColor = function (value) {
+	  Color.prototype.getHtmlColor = function(value) {
 	    var colorName;
 	    if (value != null) {
 	      colorName = value.toString().toLowerCase();
@@ -546,11 +557,11 @@
 	    throw new Error('Not a valid HTML color.');
 	  };
 
-	  Color.prototype.getHtmlColors = function () {
+	  Color.prototype.getHtmlColors = function() {
 	    return this._htmlColors;
 	  };
 
-	  Color.prototype.contrast = function () {
+	  Color.prototype.contrast = function() {
 	    var rgb, yiq, yiqB, yiqG, yiqR;
 	    rgb = this.rgb();
 	    yiqR = rgb.r * 299;
@@ -563,7 +574,7 @@
 	    return false;
 	  };
 
-	  Color.prototype.mix = function (color, amount) {
+	  Color.prototype.mix = function(color, amount) {
 	    var cmyk, mixer, remainder, result;
 	    if (amount == null) {
 	      amount = 0.5;
@@ -573,16 +584,16 @@
 	    amount = _.clamp(amount, 0, 1);
 	    remainder = 1 - amount;
 	    result = {
-	      c: cmyk.c * remainder + mixer.c * amount,
-	      m: cmyk.m * remainder + mixer.m * amount,
-	      y: cmyk.y * remainder + mixer.y * amount,
-	      k: cmyk.k * remainder + mixer.k * amount
+	      c: (cmyk.c * remainder) + (mixer.c * amount),
+	      m: (cmyk.m * remainder) + (mixer.m * amount),
+	      y: (cmyk.y * remainder) + (mixer.y * amount),
+	      k: (cmyk.k * remainder) + (mixer.k * amount)
 	    };
 	    this.__model = this._cmykToHsv(result);
 	    return this;
 	  };
 
-	  Color.prototype.lighten = function (amount) {
+	  Color.prototype.lighten = function(amount) {
 	    var white;
 	    if (amount == null) {
 	      amount = 0.25;
@@ -592,7 +603,7 @@
 	    return this;
 	  };
 
-	  Color.prototype.darken = function (amount) {
+	  Color.prototype.darken = function(amount) {
 	    var black;
 	    if (amount == null) {
 	      amount = 0.25;
@@ -602,7 +613,7 @@
 	    return this;
 	  };
 
-	  Color.prototype._rgbToHsv = function (rgb) {
+	  Color.prototype._rgbToHsv = function(rgb) {
 	    var b, d, g, h, hsvObj, maxRgb, minRgb, r;
 	    if (!this._isRgb(rgb)) {
 	      throw new Error('Not a valid RGB object.');
@@ -630,7 +641,7 @@
 	    return hsvObj;
 	  };
 
-	  Color.prototype._hsvToRgb = function (hsv) {
+	  Color.prototype._hsvToRgb = function(hsv) {
 	    var b, computedV, f, g, h, i, p, q, r, rgbObj, s, t, v;
 	    if (!this._isHsv(hsv)) {
 	      throw new Error('Not a valid HSV object.');
@@ -692,42 +703,42 @@
 	    return rgbObj;
 	  };
 
-	  Color.prototype._hexToRgb = function (hex) {
+	  Color.prototype._hexToRgb = function(hex) {
 	    var parsedHex, rgbObj;
 	    if (!this._isHex(hex)) {
 	      throw new Error('Not a valid hex string.');
 	    }
-	    hex = hex.replace(/^#?([a-f\d])([a-f\d])([a-f\d])$/i, function (m, r, g, b) {
+	    hex = hex.replace(/^#?([a-f\d])([a-f\d])([a-f\d])$/i, function(m, r, g, b) {
 	      return r + r + g + g + b + b;
 	    });
 	    hex = hex.replace(/[^0-9a-f]/gi, '');
 	    parsedHex = parseInt(hex, 16);
 	    rgbObj = {
-	      r: parsedHex >> 16 & 255,
-	      g: parsedHex >> 8 & 255,
+	      r: (parsedHex >> 16) & 255,
+	      g: (parsedHex >> 8) & 255,
 	      b: parsedHex & 255
 	    };
 	    return rgbObj;
 	  };
 
-	  Color.prototype._hexToHsv = function (hex) {
+	  Color.prototype._hexToHsv = function(hex) {
 	    return this._rgbToHsv(this._hexToRgb(hex));
 	  };
 
-	  Color.prototype._rgbToHex = function (rgb) {
+	  Color.prototype._rgbToHex = function(rgb) {
 	    var base;
 	    if (!this._isRgb(rgb)) {
 	      throw new Error('Not a valid RGB object.');
 	    }
-	    base = rgb.b | rgb.g << 8 | rgb.r << 16;
-	    return "#" + (0x1000000 + base).toString(16).slice(1);
+	    base = rgb.b | (rgb.g << 8) | (rgb.r << 16);
+	    return "#" + ((0x1000000 + base).toString(16).slice(1));
 	  };
 
-	  Color.prototype._hsvToHex = function (hsv) {
+	  Color.prototype._hsvToHex = function(hsv) {
 	    return this._rgbToHex(this._hsvToRgb(hsv));
 	  };
 
-	  Color.prototype._hsvToHsl = function (hsv) {
+	  Color.prototype._hsvToHsl = function(hsv) {
 	    var computedL, computedS, hslObj;
 	    if (!this._isHsv(hsv)) {
 	      throw new Error('Not a valid HSV object.');
@@ -748,7 +759,7 @@
 	    return hslObj;
 	  };
 
-	  Color.prototype._hslToHsv = function (hsl) {
+	  Color.prototype._hslToHsv = function(hsl) {
 	    var computedS, computedV, hsvObj;
 	    if (!this._isHsl(hsl)) {
 	      throw new Error('Not a valid HSL object.');
@@ -760,7 +771,7 @@
 	      hsl.s *= 2 - hsl.l;
 	    }
 	    computedV = (hsl.l + hsl.s) / 2;
-	    computedS = 2 * hsl.s / (hsl.l + hsl.s);
+	    computedS = (2 * hsl.s) / (hsl.l + hsl.s);
 	    hsvObj = {
 	      h: hsl.h,
 	      s: computedS,
@@ -769,22 +780,22 @@
 	    return hsvObj;
 	  };
 
-	  Color.prototype._hsvToXyz = function (hsv) {
+	  Color.prototype._hsvToXyz = function(hsv) {
 	    return this._rgbToXyz(this._hsvToRgb(hsv));
 	  };
 
-	  Color.prototype._xyzToHsv = function (xyz) {
+	  Color.prototype._xyzToHsv = function(xyz) {
 	    return this._rgbToHsv(this._xyzToRgb(xyz));
 	  };
 
-	  Color.prototype.__xyzForward = function (value) {
+	  Color.prototype.__xyzForward = function(value) {
 	    if (value > 0.04045) {
 	      return Math.pow((value + 0.055) / 1.055, 2.4);
 	    }
 	    return value / 12.92;
 	  };
 
-	  Color.prototype._rgbToXyz = function (rgb) {
+	  Color.prototype._rgbToXyz = function(rgb) {
 	    var b, g, r, xyzObj;
 	    if (!this._isRgb(rgb)) {
 	      throw new Error('Not a valid RGB object.');
@@ -800,14 +811,14 @@
 	    return xyzObj;
 	  };
 
-	  Color.prototype.__xyzBackward = function (value) {
+	  Color.prototype.__xyzBackward = function(value) {
 	    if (value > 0.0031308) {
 	      return Math.pow(value, 1 / 2.4) - 0.055;
 	    }
 	    return value * 12.92;
 	  };
 
-	  Color.prototype._xyzToRgb = function (xyz) {
+	  Color.prototype._xyzToRgb = function(xyz) {
 	    var b, g, r, rgbObj;
 	    if (!this._isXyz(xyz)) {
 	      throw new Error('Not a valid XYZ object.');
@@ -823,14 +834,14 @@
 	    return rgbObj;
 	  };
 
-	  Color.prototype.__labForward = function (value) {
+	  Color.prototype.__labForward = function(value) {
 	    if (value > 0.008856) {
 	      return Math.pow(x, 1 / 3);
 	    }
-	    return 7.787 * x + 16 / 116;
+	    return (7.787 * x) + (16 / 116);
 	  };
 
-	  Color.prototype._xyzToLab = function (xyz) {
+	  Color.prototype._xyzToLab = function(xyz) {
 	    var labObj, x, y, z;
 	    if (!this._isXyz(xyz)) {
 	      throw new Error('Not a valid XYZ object.');
@@ -839,14 +850,14 @@
 	    y = this.__labForward(xyz.y);
 	    z = this.__labForward(xyz.z * 1.0889);
 	    labObj = {
-	      l: (116 * y - 16) / 100,
-	      a: (500 * (x - y) + 128) / 255,
-	      b: (200 * (y - z) + 128) / 255
+	      l: ((116 * y) - 16) / 100,
+	      a: ((500 * (x - y)) + 128) / 255,
+	      b: ((200 * (y - z)) + 128) / 255
 	    };
 	    return labObj;
 	  };
 
-	  Color.prototype.__labBackward = function (value) {
+	  Color.prototype.__labBackward = function(value) {
 	    var thirded;
 	    thirded = Math.pow(value, 3);
 	    if (thirded > 0.008856) {
@@ -855,14 +866,14 @@
 	    return (value - 16 / 116) / 7.787;
 	  };
 
-	  Color.prototype._labToXyz = function (lab) {
+	  Color.prototype._labToXyz = function(lab) {
 	    var a, b, l, x, xyzObj, y, z;
 	    if (!this._isLab(lab)) {
 	      throw new Error('Not a valid LAB object');
 	    }
 	    l = lab.l * 100;
-	    a = lab.a * 255 - 128;
-	    b = lab.b * 255 - 128;
+	    a = (lab.a * 255) - 128;
+	    b = (lab.b * 255) - 128;
 	    y = (l + 16) / 116;
 	    x = a / 500 + y;
 	    z = y - b / 200;
@@ -874,15 +885,15 @@
 	    return xyzObj;
 	  };
 
-	  Color.prototype._labToHsv = function (lab) {
+	  Color.prototype._labToHsv = function(lab) {
 	    return this._xyzToHsv(this._labToXyz(lab));
 	  };
 
-	  Color.prototype._hsvToLab = function (hsv) {
+	  Color.prototype._hsvToLab = function(hsv) {
 	    return this._xyzToLab(this._hsvToXyz(hsv));
 	  };
 
-	  Color.prototype.__rgbToCmy = function (rgb) {
+	  Color.prototype.__rgbToCmy = function(rgb) {
 	    var cmyObj;
 	    cmyObj = {
 	      c: 1 - rgb.r,
@@ -892,7 +903,7 @@
 	    return cmyObj;
 	  };
 
-	  Color.prototype.__cmyToRgb = function (cmy) {
+	  Color.prototype.__cmyToRgb = function(cmy) {
 	    var rgbObj;
 	    rgbObj = {
 	      r: 1 - cmy.c,
@@ -902,7 +913,7 @@
 	    return rgbObj;
 	  };
 
-	  Color.prototype.__cmyToCmyk = function (cmy) {
+	  Color.prototype.__cmyToCmyk = function(cmy) {
 	    var K, cmykObj;
 	    if (!this._isCmy(cmy)) {
 	      throw new Error('Not a valid cmy object.');
@@ -935,7 +946,7 @@
 	    return cmykObj;
 	  };
 
-	  Color.prototype.__cmykToCmy = function (cmyk) {
+	  Color.prototype.__cmykToCmy = function(cmyk) {
 	    var K, cmyObj;
 	    K = cmyk.k;
 	    cmyObj = {
@@ -946,25 +957,25 @@
 	    return cmyObj;
 	  };
 
-	  Color.prototype._rgbToCmyk = function (rgb) {
+	  Color.prototype._rgbToCmyk = function(rgb) {
 	    if (!this._isRgb(rgb)) {
 	      throw new Error('Not a valid rgb object.');
 	    }
 	    return this.__cmyToCmyk(this.__rgbToCmy(rgb));
 	  };
 
-	  Color.prototype._cmykToRgb = function (cmyk) {
+	  Color.prototype._cmykToRgb = function(cmyk) {
 	    if (!this._isCmyk(cmyk)) {
 	      throw new Error('Not a valid cmyk object.');
 	    }
 	    return this.__cmyToRgb(this.__cmykToCmy(cmyk));
 	  };
 
-	  Color.prototype._cmykToHsv = function (cmyk) {
+	  Color.prototype._cmykToHsv = function(cmyk) {
 	    return this._rgbToHsv(this._cmykToRgb(cmyk));
 	  };
 
-	  Color.prototype._hsvToCmyk = function (hsv) {
+	  Color.prototype._hsvToCmyk = function(hsv) {
 	    return this._rgbToCmyk(this._hsvToRgb(hsv));
 	  };
 
@@ -1120,10 +1131,12 @@
 	  };
 
 	  return Color;
-	}();
+
+	})();
+
 
 /***/ },
-/* 3 */
+/* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(global, module) {/**
@@ -17734,10 +17747,10 @@
 	  }
 	}.call(this));
 
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(4)(module)))
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(5)(module)))
 
 /***/ },
-/* 4 */
+/* 5 */
 /***/ function(module, exports) {
 
 	module.exports = function(module) {

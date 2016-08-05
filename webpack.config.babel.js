@@ -4,7 +4,7 @@ import path from 'path';
 let PROD = JSON.parse(process.env.PROD_ENV || '0');
 
 export default {
-	entry: ['./src/main.coffee'],
+	entry: ['./src/index.coffee'],
 	output: {
 		path: path.resolve('./dist'),
 		filename: PROD ? 'please.min.js' : 'please.js'
@@ -13,7 +13,7 @@ export default {
 		loaders: [
 			{
 				test: /\.coffee$/,
-				loaders: ['babel-loader','coffee-loader']
+				loaders: ['coffee-loader']
 			}
 		]
 	},

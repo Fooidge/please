@@ -1,13 +1,6 @@
-# _ = require 'lodash'
+_ = require 'lodash'
 
-`import {
-	isObject,
-	isString,
-	isNumber,
-	clamp,
-} from 'lodash'`
-
-class Color
+module.exports = class Color
 	constructor: (color) ->
 		if color?
 			switch @_detectType color

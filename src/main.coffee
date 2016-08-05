@@ -96,4 +96,4 @@ please.makeScheme = (options = {}) ->
 	scheme = []
 	return scheme
 
-console.log please.Color('#fff').rgb()
+module.exports = please
