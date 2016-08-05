@@ -1,6 +1,6 @@
 Color = require './Color.coffee'
 
-please = {}
+module.exports = please = {}
 
 please.Color = (color) -> new Color color
 
@@ -95,5 +95,3 @@ please.make_scheme = (options = {}) ->
 please.makeScheme = (options = {}) ->
 	scheme = []
 	return scheme
-
-module.exports = please

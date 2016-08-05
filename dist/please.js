@@ -73,7 +73,7 @@
 
 	Color = __webpack_require__(3);
 
-	please = {};
+	module.exports = please = {};
 
 	please.Color = function(color) {
 	  return new Color(color);
@@ -206,8 +206,6 @@
 	  scheme = [];
 	  return scheme;
 	};
-
-	module.exports = please;
 
 
 /***/ },
