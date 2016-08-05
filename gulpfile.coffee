@@ -5,8 +5,8 @@ uglify = require 'gulp-uglify'
 webpack = require 'webpack-stream'
 
 gulp.task 'build', ->
-	gulp.src 'src/index.coffee'
-	.pipe webpack(require('./webpack.config.js'))
+	gulp.src 'src/index.js'
+	.pipe webpack(require('./webpack.config.babel.js'))
 	.pipe gulp.dest 'dist'
 	.pipe uglify()
 	.pipe rename 'please.min.js'
