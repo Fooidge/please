@@ -1,3 +1,4 @@
+_ = require 'lodash'
 Color = require './Color.coffee'
 
 module.exports = please = {}
