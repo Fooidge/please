@@ -10,13 +10,7 @@ export default class Color {
 	constructor(color) {
 		if (color != null) {
 			switch (this._detectType(color)) {
-				case 'HSV':
-					this.__model = {
-						h: color.h,
-						s: color.s,
-						v: color.v
-					};
-					break;
+				case 'HSV': this.hsv(color); break;
 				case 'HSL': this.__model = this._hslToHsv(color); break;
 				case 'RGB': this.__model = this._rgbToHsv(color); break;
 				case 'HEX': this.__model = this._hexToHsv(color); break;
@@ -293,7 +287,9 @@ export default class Color {
 		let yiqG = rgb.g * 587;
 		let yiqB = rgb.b * 114;
 		let yiq = (yiqR + yiqG + yiqB) / 1000;
-		if (yiq < 128) { return true; }
+		if (yiq < 128) {
+			return true;
+		}
 		return false;
 	}
 
