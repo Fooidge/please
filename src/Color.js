@@ -23,6 +23,7 @@ export default class Color {
 				case 'XYZ': this.__model = this._xyzToHsv(color); break;
 				case 'LAB': this.__model = this._labToHsv(color); break;
 				case 'CMYK': this.__model = this._cmykToHsv(color); break;
+				case 'HTML': this.__model = this._htmlToHsv(color); break;
 			}
 		} else {
 			this.__model = {
@@ -42,6 +43,7 @@ export default class Color {
 		if (this._isXyz(color)) { return 'XYZ'; }
 		if (this._isLab(color)) { return 'LAB'; }
 		if (this._isCmyk(color)) { return 'CMYK'; }
+		if (this._isHtml(color)) { return 'HTML'; }
 		throw new Error('Not a valid color type.');
 	}
 
@@ -77,6 +79,14 @@ export default class Color {
 	_isRgbString(color) {
 		let rgbTest = /rgb\(\s?(\d{1,3},\s?){2}\d{1,3}\s?\)/i;
 		if (isString(color) && rgbTest.test(color)) {
+			return true;
+		}
+		return false;
+	}
+
+	_isHtml(color) {
+		let normalizedColor = color.toLowerCase();
+		if (isString(normalizedColor) && normalizedColor in htmlColors) {
 			return true;
 		}
 		return false;
@@ -371,12 +381,13 @@ export default class Color {
 		let p = v * (1 - s);
 		let q = v * (1 - (s * f));
 		let t = v * (1 - (s * (1 - f)));
+		let r, g, b;
 
 		switch (i) {
 			case 0:
-				var r = v;
-				var g = t;
-				var b = p;
+				r = v;
+				g = t;
+				b = p;
 				break;
 			case 1:
 				r = q;
@@ -431,7 +442,9 @@ export default class Color {
 		return rgbObj;
 	}
 
-	_hexToHsv(hex) { return this._rgbToHsv(this._hexToRgb(hex)); }
+	_hexToHsv(hex) {
+		return this._rgbToHsv(this._hexToRgb(hex));
+	}
 
 	_rgbToHex(rgb) {
 		if (!this._isRgb(rgb)) {
@@ -441,7 +454,17 @@ export default class Color {
 		return `#${(0x1000000 + base).toString(16).slice(1)}`;
 	}
 
-	_hsvToHex(hsv) { return this._rgbToHex(this._hsvToRgb(hsv)); }
+	_hsvToHex(hsv) {
+		return this._rgbToHex(this._hsvToRgb(hsv));
+	}
+
+	_htmlToHsv(html) {
+		if (!this._isHtml(html)) {
+			throw new Error('Not a valid HTML color.');
+		}
+		let normalizedColor = html.toLowerCase();
+		return this._hexToHsv(htmlColors[normalizedColor]);
+	}
 
 	_hsvToHsl(hsv) {
 		if (!this._isHsv(hsv)) {
