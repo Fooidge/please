@@ -33,8 +33,11 @@ please.generateFromBaseColor = function(baseColor) {
 	let color = new Color();
 	let base = new Color(baseColor);
 	color.hue(clamp(random(base.hue() - 5, base.hue() + 5), 0, 360));
-	if (base.saturation() === 0) { color.saturation(0);
-	} else { color.saturation(random(0.4, 0.85, true)); }
+	if (base.saturation() === 0) {
+		color.saturation(0);
+	} else {
+		color.saturation(random(0.4, 0.85, true));
+	}
 	color.value(random(0.4, 0.85, true));
 	return color;
 };

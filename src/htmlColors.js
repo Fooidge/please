@@ -1,4 +1,4 @@
-export let htmlColors = {
+export const htmlColors = {
 	aliceblue: 'F0F8FF',
 	antiquewhite: 'FAEBD7',
 	aqua: '00FFFF',
@@ -147,4 +147,4 @@ export let htmlColors = {
 	whitesmoke: 'F5F5F5',
 	yellow: 'FFFF00',
 	yellowgreen: '9ACD32'
-};
+}

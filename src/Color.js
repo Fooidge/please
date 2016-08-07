@@ -4,7 +4,7 @@ import {
 	isNumber,
 	clamp
 } from 'lodash';
-import htmlColors from './htmlColors';
+import { htmlColors } from './htmlColors';
 
 export default class Color {
 	constructor(color) {
@@ -451,8 +451,7 @@ export default class Color {
 		let computedS = hsv.s * hsv.v;
 		if (computedL <= 1) {
 			computedS = computedS / computedL;
-		}
-		else {
+		} else {
 			computedS = computedS / (2 - computedL);
 		}
 		computedL = computedL / 2;
@@ -471,8 +470,11 @@ export default class Color {
 			throw new Error('Not a valid HSL object.');
 		}
 		hsl.l *= 2;
-		if (hsl.l <= 1) { hsl.s *= hsl.l;
-		} else { hsl.s *= ( 2 - hsl.l); }
+		if (hsl.l <= 1) {
+			hsl.s *= hsl.l;
+		} else {
+			hsl.s *= ( 2 - hsl.l);
+		}
 		let computedV = (hsl.l + hsl.s) / 2;
 		let computedS = (2 * hsl.s) / (hsl.l + hsl.s);
 
