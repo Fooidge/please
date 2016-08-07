@@ -20,11 +20,11 @@ export default class Color {
 				case 'HTML': this.__model = this._htmlToHsv(color); break;
 			}
 		} else {
-			this.__model = {
+			this.hsv({
 				h: 0,
 				s: 0,
 				v: 0
-			};
+			});
 		}
 	}
 
