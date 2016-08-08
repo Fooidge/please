@@ -180,8 +180,12 @@ let Hsv = function () {
 
 	this.hsv = function(value) {
 		if ((value != null) && this._isHsv(value)) {
-			this.__model = value;
-			this.__model.h = clamp(value.h, 0, 1);
+			let adjustedHsv = {
+				h: clamp(value.h, 0, 1.0),
+				s: value.s,
+				v: value.v
+			};
+			this.__model = adjustedHsv;
 			return this;
 		}
 		return this.__model;

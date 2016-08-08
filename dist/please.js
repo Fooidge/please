@@ -9448,7 +9448,7 @@
 		 * Alias for value.
 		 * @param  {Number} value
 		 * @return {Function}
-		 */this.brightness=function(value){return this.value(value);};this.hsv=function(value){if(value!=null&&this._isHsv(value)){this.__model=value;this.__model.h=(0,_lodash.clamp)(value.h,0,1);return this;}return this.__model;};};exports.default=Hsv;
+		 */this.brightness=function(value){return this.value(value);};this.hsv=function(value){if(value!=null&&this._isHsv(value)){var adjustedHsv={h:(0,_lodash.clamp)(value.h,0,1.0),s:value.s,v:value.v};this.__model=adjustedHsv;return this;}return this.__model;};};exports.default=Hsv;
 
 /***/ },
 /* 9 */
