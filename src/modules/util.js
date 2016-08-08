@@ -4,6 +4,7 @@ import {
 } from 'lodash';
 
 let Util = function () {
+
 	/**
 	 * Detects type of color input into the constrcutor, errors if none found.
 	 * @param  {Any} color
@@ -20,7 +21,7 @@ let Util = function () {
 		if (this._isCmyk(color)) { return 'CMYK'; }
 		if (this._isHtml(color)) { return 'HTML'; }
 		throw new Error('Not a valid color type.');
-	}
+	};
 
 	/**
 	 * Returns true if color is HSV and false otherwise.
@@ -32,7 +33,7 @@ let Util = function () {
 			return true;
 		}
 		return false;
-	}
+	};
 
 	/**
 	 * Returns true if color is HSL and false otherwise.
@@ -44,7 +45,7 @@ let Util = function () {
 			return true;
 		}
 		return false;
-	}
+	};
 
 	/**
 	 * Returns true if color is an HSL string and false otherwise.
@@ -57,7 +58,7 @@ let Util = function () {
 			return true;
 		}
 		return false;
-	}
+	};
 
 	/**
 	 * Returns true if color is RGB and false otherwise.
@@ -69,7 +70,7 @@ let Util = function () {
 			return true;
 		}
 		return false;
-	}
+	};
 
 	/**
 	 * Returns true if color is an RGB string and false otherwise.
@@ -82,7 +83,7 @@ let Util = function () {
 			return true;
 		}
 		return false;
-	}
+	};
 
 	/**
 	 * Returns true if color is an HTML color and false otherwise.
@@ -91,11 +92,11 @@ let Util = function () {
 	 */
 	this._isHtml = function(color) {
 		let normalizedColor = color.toLowerCase();
-		if (isString(normalizedColor) && normalizedColor in htmlColors) {
+		if (isString(normalizedColor) && normalizedColor in this._htmlColors) {
 			return true;
 		}
 		return false;
-	}
+	};
 
 	/**
 	 * Returns true if color is a Hex string and false otherwise.
@@ -108,7 +109,7 @@ let Util = function () {
 			return true;
 		}
 		return false;
-	}
+	};
 
 	/**
 	 * Returns true if color is XYZ and false otherwise.
@@ -120,7 +121,7 @@ let Util = function () {
 			return true;
 		}
 		return false;
-	}
+	};
 
 	/**
 	 * Returns true if color is LAB and false otherwise.
@@ -132,7 +133,7 @@ let Util = function () {
 			return true;
 		}
 		return false;
-	}
+	};
 
 	/**
 	 * Returns true is color is CMY and false otherwise.
@@ -144,7 +145,7 @@ let Util = function () {
 			return true;
 		}
 		return false;
-	}
+	};
 
 	/**
 	 * Returns true if color is CMYK and false otherwise.
@@ -156,7 +157,7 @@ let Util = function () {
 			return true;
 		}
 		return false;
-	}
+	};
 }
 
 export default Util;
