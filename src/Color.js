@@ -1,13 +1,13 @@
 import {
-	isObject,
-	isString,
 	isNumber,
 	clamp
 } from 'lodash';
 import { htmlColors } from './htmlColors';
+import Util from './modules/util';
 
 export default class Color {
 	constructor(color) {
+		Util.call(this);
 		if (color != null) {
 			switch (this._detectType(color)) {
 				case 'HSV': this.hsv(color); break;
@@ -28,100 +28,11 @@ export default class Color {
 		}
 	}
 
-	_detectType(color) {
-		if (this._isHsv(color)) { return 'HSV'; }
-		if (this._isHsl(color)) { return 'HSL'; }
-		if (this._isRgb(color)) { return 'RGB'; }
-		if (this._isRgbString(color)) { return 'RGB_STRING'; }
-		if (this._isHex(color)) { return 'HEX'; }
-		if (this._isXyz(color)) { return 'XYZ'; }
-		if (this._isLab(color)) { return 'LAB'; }
-		if (this._isCmyk(color)) { return 'CMYK'; }
-		if (this._isHtml(color)) { return 'HTML'; }
-		throw new Error('Not a valid color type.');
-	}
-
-	_isHsv(color) {
-		if (isObject(color) && (color.h != null) && (color.s != null) && (color.v != null)) {
-			return true;
-		}
-		return false;
-	}
-
-	_isHsl(color) {
-		if (isObject(color) && (color.h != null) && (color.s != null) && (color.l != null)) {
-			return true;
-		}
-		return false;
-	}
-
-	_isHslString(color) {
-		let hslTest = /hsl\(s?d{1,3},s?d{1,3}%,s?d{1,3}%s?\)/i;
-		if (isString(color) && hslTest.test(color)) {
-			return true;
-		}
-		return false;
-	}
-
-	_isRgb(color) {
-		if (isObject(color) && (color.r != null) && (color.g != null) && (color.b != null)) {
-			return true;
-		}
-		return false;
-	}
-
-	_isRgbString(color) {
-		let rgbTest = /rgb\(\s?(\d{1,3},\s?){2}\d{1,3}\s?\)/i;
-		if (isString(color) && rgbTest.test(color)) {
-			return true;
-		}
-		return false;
-	}
-
-	_isHtml(color) {
-		let normalizedColor = color.toLowerCase();
-		if (isString(normalizedColor) && normalizedColor in htmlColors) {
-			return true;
-		}
-		return false;
-	}
-
-	_isHex(color) {
-		let hexTest = /^#?(?:[0-9a-f]{3}){1,2}$/i;
-		if (isString(color) && hexTest.test(color)) {
-			return true;
-		}
-		return false;
-	}
-
-	_isXyz(color) {
-		if (isObject(color) && (color.x != null) && (color.y != null) && (color.z != null)) {
-			return true;
-		}
-		return false;
-	}
-
-	_isLab(color) {
-		if (isObject(color) && (color.l != null) && (color.a != null) && (color.b != null)) {
-			return true;
-		}
-		return false;
-	}
-
-	_isCmy(color) {
-		if (isObject(color) && (color.c != null) && (color.m != null) && (color.y != null)) {
-			return true;
-		}
-		return false;
-	}
-
-	_isCmyk(color) {
-		if(this._isCmy(color) && color.k != null) {
-			return true;
-		}
-		return false;
-	}
-
+	/**
+	 * Getter/Setter for hue property.
+	 * @param  {Number} value
+	 * @return {Object}
+	 */
 	hue(value) {
 		if ((value != null) && isNumber(value)) {
 			this.__model.h = Math.abs(value % 360);
@@ -130,6 +41,11 @@ export default class Color {
 		return this.__model.h;
 	}
 
+	/**
+	 * Getter/Setter for saturation property.
+	 * @param  {Number} value
+	 * @return {Object}
+	 */
 	saturation(value) {
 		if ((value != null) && isNumber(value)) {
 			this.__model.s = clamp(value, 0, 1);
@@ -138,10 +54,20 @@ export default class Color {
 		return this.__model.s;
 	}
 
+	/**
+	 * Alias for saturation.
+	 * @param  {Number} value
+	 * @return {Function}
+	 */
 	sat(value) {
 		return this.saturation(value);
 	}
 
+	/**
+	 * Getter/Setter for value property.
+	 * @param  {Number} value
+	 * @return {Object}
+	 */
 	value(value) {
 		if ((value != null) && isNumber(value)) {
 			this.__model.v = clamp(value, 0, 1);
@@ -150,14 +76,29 @@ export default class Color {
 		return this.__model.v;
 	}
 
+	/**
+	 * Alias for value.
+	 * @param  {Number} value
+	 * @return {Function}
+	 */
 	val(value) {
 		return this.value(value);
 	}
 
+	/**
+	 * Alias for value.
+	 * @param  {Number} value
+	 * @return {Function}
+	 */
 	brightness(value) {
 		return this.value(value);
 	}
 
+	/**
+	 * Getter/Setter for alpha property.
+	 * @param  {Number} value
+	 * @return {Object}
+	 */
 	alpha(value) {
 		if ((value != null) && isNumber(value)) {
 			this.__model.a = clamp(value, 0, 1);
@@ -276,7 +217,6 @@ export default class Color {
 		}
 		throw new Error('Not a valid HTML color.');
 	}
-
 
 	getHtmlColors() { return htmlColors; }
 
