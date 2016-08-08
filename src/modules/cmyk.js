@@ -1,3 +1,5 @@
+import { clamp } from 'lodash';
+
 let Cmyk = function () {
 
 	this.__cmyToRgb = function(cmy) {
@@ -65,7 +67,13 @@ let Cmyk = function () {
 
 	this.cmyk = function(value) {
 		if(value != null) {
-			this.__model = this._cmykToHsv(value);
+			let adjustedCmyk = {
+				c: clamp(value.c, 0, 1.0),
+				m: clamp(value.m, 0, 1.0),
+				y: clamp(value.y, 0, 1.0),
+				k: clamp(value.k, 0, 1.0)
+			};
+			this.__model = this._cmykToHsv(adjustedCmyk);
 		}
 		return this._hsvToCmyk(this.__model);
 	};
