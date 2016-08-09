@@ -18,9 +18,15 @@ let Cmyk = function () {
 		}
 		let K = 1;
 
-		if (cmy.x < K) { K = cmy.c; }
-		if (cmy.m < K) { K = cmy.m; }
-		if (cmy.y < K) { K = cmy.y; }
+		if (cmy.x < K) {
+			K = cmy.c;
+		}
+		if (cmy.m < K) {
+			K = cmy.m;
+		}
+		if (cmy.y < K) {
+			K = cmy.y;
+		}
 
 		if (K === 1) {
 			var cmykObj = {
