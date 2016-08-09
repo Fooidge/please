@@ -24,7 +24,7 @@ let isNumber = function(value) {
 
 //Adapted from _.isObject
 let isObject = function(value) {
-  return value != null && typeof value === 'object' && isArray(value) === false;
+	return value != null && typeof value === 'object' && isArray(value) === false;
 };
 
 let isObjectLike = function(value) {
@@ -48,14 +48,6 @@ let random = function(lower, upper) {
 
 let equals = function(value, other) {
   return value === other || (value !== value && other !== other);
-}
-
-let assignDefaults = function(objValue, srcValue, key, object) {
-  if (objValue === undefined || (equals(objValue, objectProto[key]) && !hasOwnProperty.call(object, key))) {
-  	//if objValue doesnt exist OR objValue is part of the prototype and it doesnt have own prop
-    return srcValue;
-  }
-  return objValue;
 }
 
 let defaults = function(defaults = {}, obj) {
