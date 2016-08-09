@@ -4,9 +4,9 @@ let Cmyk = function () {
 
 	this.__cmyToRgb = function(cmy) {
 		let rgbObj = {
-			r: 1 - cmy.c,
-			g: 1 - cmy.m,
-			b: 1 - cmy.y
+			r: (1 - cmy.c) * 255,
+			g: (1 - cmy.m) * 255,
+			b: (1 - cmy.y) * 255
 		};
 
 		return rgbObj;
@@ -68,12 +68,13 @@ let Cmyk = function () {
 	this.cmyk = function(value) {
 		if(value != null) {
 			let adjustedCmyk = {
-				c: clamp(value.c, 0, 1.0),
-				m: clamp(value.m, 0, 1.0),
-				y: clamp(value.y, 0, 1.0),
-				k: clamp(value.k, 0, 1.0)
+				c: clamp(value.c, 0, 1),
+				m: clamp(value.m, 0, 1),
+				y: clamp(value.y, 0, 1),
+				k: clamp(value.k, 0, 1)
 			};
 			this.__model = this._cmykToHsv(adjustedCmyk);
+			return this;
 		}
 		return this._hsvToCmyk(this.__model);
 	};

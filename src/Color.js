@@ -83,11 +83,13 @@ export default class Color {
 		let remainder = 1 - amount;
 
 		let result = {
-			c: (cmyk.c * remainder) + (mixer.c * amount),
-			m: (cmyk.m * remainder) + (mixer.m * amount),
-			y: (cmyk.y * remainder) + (mixer.y * amount),
-			k: (cmyk.k * remainder) + (mixer.k * amount)
+			c: clamp((cmyk.c * remainder) + (mixer.c * amount), 0, 1),
+			m: clamp((cmyk.m * remainder) + (mixer.m * amount), 0, 1),
+			y: clamp((cmyk.y * remainder) + (mixer.y * amount), 0, 1),
+			k: clamp((cmyk.k * remainder) + (mixer.k * amount), 0, 1)
 		};
+
+		console.log(result);
 
 		this.__model = this._cmykToHsv(result);
 		return this;
