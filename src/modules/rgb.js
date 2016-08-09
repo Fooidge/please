@@ -1,7 +1,4 @@
-import {
-	isNumber,
-	clamp
-} from 'lodash';
+import { isNumber, clamp } from '../util/util';
 
 let Rgb = function () {
 

@@ -1,10 +1,5 @@
-import {
-	random,
-	isNumber,
-	defaults
-} from 'lodash';
+import { isNumber, random, defaults } from './util/util';
 import Color from './Color';
-
 
 let please = {};
 export default please;

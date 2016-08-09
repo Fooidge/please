@@ -1,9 +1,9 @@
 import {
-	isObject,
-	isString
-} from 'lodash';
+	isString,
+	isObject
+} from '../util/util';
 
-let Util = function () {
+let ColorUtil = function () {
 
 	/**
 	 * Detects type of color input into the constrcutor, errors if none found.
@@ -160,4 +160,4 @@ let Util = function () {
 	};
 }
 
-export default Util;
+export default ColorUtil;

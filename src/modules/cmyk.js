@@ -1,4 +1,4 @@
-import { clamp } from 'lodash';
+import { clamp } from '../util/util';
 
 let Cmyk = function () {
 

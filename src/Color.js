@@ -1,8 +1,5 @@
-import {
-	isNumber,
-	clamp
-} from 'lodash';
-import Util from './modules/util';
+import { isNumber, clamp } from './util/util';
+import ColorUtil from './modules/colorUtil';
 import Hsv from './modules/hsv';
 import Rgb from './modules/rgb';
 import Hex from './modules/hex';
@@ -14,7 +11,7 @@ import Lab from './modules/lab';
 
 export default class Color {
 	constructor(color) {
-		Util.call(this);
+		ColorUtil.call(this);
 		Hsv.call(this);
 		Rgb.call(this);
 		Hex.call(this);
