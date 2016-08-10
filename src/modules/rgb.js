@@ -33,7 +33,7 @@ let Rgb = function () {
 	};
 
 	this.rgb = function(value) {
-		if (value != null) {
+		if (value != null && this._isRgb(value)) {
 			this.__model = this._rgbToHsv(value);
 			return this;
 		}
