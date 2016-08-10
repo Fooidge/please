@@ -5,14 +5,139 @@
 </head>
 <body>
 <div id="test" style="height: 100px; width: 100px;"></div>
+<div class="field">
+	<label>
+		<span>rgb</span>
+		<input type="text" id="rgb">
+	</label>
+</div>
+<div class="field">
+	<label>
+		<span>hex</span>
+		<input type="text" id="hex">
+	</label>
+</div>
+<div class="field">
+	<label>
+		<span>hsv</span>
+		<input type="text" id="hsv">
+	</label>
+</div>
+<div class="field">
+	<label>
+		<span>hsl</span>
+		<input type="text" id="hsl">
+	</label>
+</div>
+<div class="field">
+	<label>
+		<span>cmyk</span>
+		<input type="text" id="cmyk">
+	</label>
+</div>
 </body>
+<style>
+	* {
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		box-sizing: border-box;
+	}
+
+	.field {
+		margin-bottom: 0.5rem;
+	}
+
+	.field label {
+		display: flex;
+		flex-direction: column;
+		width: 10rem;
+		text-transform: uppercase;
+		font-family: sans-serif;
+		font-size: 0.75rem;
+		font-weight: 600;
+		letter-spacing: 0.1rem;
+	}
+
+	.field input {
+		height: 1.5rem;
+		padding: 0.25rem;
+		outline: 0;
+		border: 1px solid rgb(200, 200, 200);
+		appearance: none;
+		-webkit-appearance: none;
+		transition: border 0.218s ease;
+	}
+
+	.field input:focus {
+		border-color: rgb(100, 100, 100);
+	}
+
+</style>
 <script type="text/javascript" src="../dist/please.js"></script>
 <script type="text/javascript">
 	var test = document.getElementById('test');
-	var foo = please.Color('#0000FF');
-	var bar = please.Color('#FFFF00');
-	var black = please.Color('#000');
-	var white = please.Color('#FFF');
-	test.style.backgroundColor = bar.rgbString();
+	var rgb = document.getElementById('rgb');
+	var hex = document.getElementById('hex');
+	var hsv = document.getElementById('hsv');
+	var hsl = document.getElementById('hsl');
+	var cmyk = document.getElementById('cmyk');
+
+	var color = please.Color();
+	var inputs = [rgb, hex, hsv, hsl, cmyk];
+
+	var setTestColor = function(color) {
+		test.style.backgroundColor = color.rgbString();
+		return;
+	}
+
+	var setRgbValue = function(color) {
+		rgb.value = color.red() + ", " + color.green() + ", " + color.blue();
+		return;
+	}
+
+	var setHexValue = function(color) {
+		hex.value = color.hex();
+		return;
+	}
+
+	var setHsvValue = function(color) {
+		hsv.value = color.hue() + ", " + color.sat() + ", " + color.val();
+		return;
+	}
+
+	var setHslValue = function(color) {
+		hsl.value = color.hsl().h + ", " + color.hsl().s + ", " + color.hsl().l;
+		return;
+	}
+
+	var setCmykValue = function(color) {
+		cmyk.value =
+			color.cmyk().c + ", " +
+			color.cmyk().m + ", " +
+			color.cmyk().y + ", " +
+			color.cmyk().k;
+		return;
+	}
+
+	var setters = [setTestColor, setRgbValue, setHexValue, setHsvValue, setHslValue, setCmykValue];
+
+	var updateShit = function(color) {
+		for (var i = setters.length - 1; i >= 0; i--) {
+			setters[i](color);
+		}
+	}
+
+	for (var i = inputs.length - 1; i >= 0; i--) {
+		inputs[i].addEventListener('blur', function(){
+			var inputColor = color.hex(hex.value);
+			updateShit(inputColor);
+		});
+		inputs[i].addEventListener('keydown', function(e){
+			if(e.keyCode === 13) {
+				var inputColor = color.hex(hex.value);
+				updateShit(inputColor);
+			}
+		});
+	}
 </script>
 </html>
