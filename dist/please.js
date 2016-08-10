@@ -124,7 +124,7 @@
 		 * Returns true if color is an HTML color and false otherwise.
 		 * @param  {Any} color
 		 * @return {Boolean}
-		 */this._isHtml=function(color){var normalizedColor=color.toLowerCase();if((0,_util.isString)(normalizedColor)&&normalizedColor in this._htmlColors){return true;}return false;};/**
+		 */this._isHtml=function(color){if((0,_util.isString)(color)&&color.toLowerCase()in this._htmlColors){return true;}return false;};/**
 		 * Returns true if color is a Hex string and false otherwise.
 		 * @param  {Any} color
 		 * @return {Boolean}
@@ -203,7 +203,7 @@
 /* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';Object.defineProperty(exports,"__esModule",{value:true});var _util=__webpack_require__(3);var Cmyk=function Cmyk(){this.__cmyToRgb=function(cmy){var rgbObj={r:(1-cmy.c)*255,g:(1-cmy.m)*255,b:(1-cmy.y)*255};return rgbObj;};this.__cmyToCmyk=function(cmy){if(!this._isCmy(cmy)){throw new Error('Not a valid cmy object.');}var K=1;if(cmy.x<K){K=cmy.c;}if(cmy.m<K){K=cmy.m;}if(cmy.y<K){K=cmy.y;}if(K===1){var cmykObj={c:0,m:0,y:0,k:1};return cmykObj;}var cmykObj={c:(cmy.c-K)/(1-K),m:(cmy.m-K)/(1-K),y:(cmy.y-K)/(1-K),k:K};return cmykObj;};this.__cmykToCmy=function(cmyk){var K=cmyk.k;var cmyObj={c:cmyk.c*(1-K)+K,m:cmyk.m*(1-K)+K,y:cmyk.y*(1-K)+K};return cmyObj;};this._cmykToRgb=function(cmyk){if(!this._isCmyk(cmyk)){throw new Error('Not a valid cmyk object.');}return this.__cmyToRgb(this.__cmykToCmy(cmyk));};this._cmykToHsv=function(cmyk){return this._rgbToHsv(this._cmykToRgb(cmyk));};this.cmyk=function(value){if(value!=null){var adjustedCmyk={c:(0,_util.clamp)(value.c,0,1),m:(0,_util.clamp)(value.m,0,1),y:(0,_util.clamp)(value.y,0,1),k:(0,_util.clamp)(value.k,0,1)};this.__model=this._cmykToHsv(adjustedCmyk);return this;}return this._hsvToCmyk(this.__model);};};exports.default=Cmyk;
+	'use strict';Object.defineProperty(exports,"__esModule",{value:true});var _util=__webpack_require__(3);var Cmyk=function Cmyk(){this.__cmyToRgb=function(cmy){var rgbObj={r:(1-cmy.c)*255,g:(1-cmy.m)*255,b:(1-cmy.y)*255};return rgbObj;};this.__cmyToCmyk=function(cmy){if(!this._isCmy(cmy)){throw new Error('Not a valid cmy object.');}var K=1;if(cmy.x<K){K=cmy.c;}if(cmy.m<K){K=cmy.m;}if(cmy.y<K){K=cmy.y;}if(K===1){var cmykObj={c:0,m:0,y:0,k:1};return cmykObj;}var cmykObj={c:(cmy.c-K)/(1-K),m:(cmy.m-K)/(1-K),y:(cmy.y-K)/(1-K),k:K};return cmykObj;};this.__cmykToCmy=function(cmyk){var K=cmyk.k;var cmyObj={c:cmyk.c*(1-K)+K,m:cmyk.m*(1-K)+K,y:cmyk.y*(1-K)+K};return cmyObj;};this._cmykToRgb=function(cmyk){if(!this._isCmyk(cmyk)){throw new Error('Not a valid cmyk object.');}return this.__cmyToRgb(this.__cmykToCmy(cmyk));};this._cmykToHsv=function(cmyk){return this._rgbToHsv(this._cmykToRgb(cmyk));};this.cmyk=function(value){if(value!=null&&this._isCmyk(value)){var adjustedCmyk={c:(0,_util.clamp)(value.c,0,1),m:(0,_util.clamp)(value.m,0,1),y:(0,_util.clamp)(value.y,0,1),k:(0,_util.clamp)(value.k,0,1)};this.__model=this._cmykToHsv(adjustedCmyk);return this;}return this._hsvToCmyk(this.__model);};};exports.default=Cmyk;
 
 /***/ },
 /* 11 */

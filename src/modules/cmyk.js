@@ -72,7 +72,7 @@ let Cmyk = function () {
 	};
 
 	this.cmyk = function(value) {
-		if(value != null) {
+		if(value != null && this._isCmyk(value)) {
 			let adjustedCmyk = {
 				c: clamp(value.c, 0, 1),
 				m: clamp(value.m, 0, 1),

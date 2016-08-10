@@ -91,8 +91,7 @@ let ColorUtil = function () {
 	 * @return {Boolean}
 	 */
 	this._isHtml = function(color) {
-		let normalizedColor = color.toLowerCase();
-		if (isString(normalizedColor) && normalizedColor in this._htmlColors) {
+		if (isString(color) && color.toLowerCase() in this._htmlColors) {
 			return true;
 		}
 		return false;
