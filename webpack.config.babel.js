@@ -5,6 +5,7 @@ let PROD = JSON.parse(process.env.PROD_ENV || '0');
 
 export default {
 	entry: ['./src/index.js'],
+	devtool: 'source-map',
 	output: {
 		path: path.resolve('./dist'),
 		filename: PROD ? 'please.min.js' : 'please.js'
