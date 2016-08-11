@@ -63,9 +63,9 @@ let Hsv = function () {
 		}
 
 		var rgbObj = {
-			r: Math.floor(r * 255),
-			g: Math.floor(g * 255),
-			b: Math.floor(b * 255)
+			r: r * 255,
+			g: g * 255,
+			b: b * 255
 		};
 
 		return rgbObj;

@@ -4,17 +4,38 @@ let Hsl = function() {
 		if (!this._isHsl(hsl)) {
 			throw new Error('Not a valid HSL object.');
 		}
-		hsl.l *= 2;
-		if (hsl.l <= 1) {
-			hsl.s *= hsl.l;
+
+		let { h } = hsl;
+		let { s } = hsl;
+		let { l } = hsl;
+		let sMin = hsl.s;
+		let lMin = Math.max(l, 0.01);
+		let computedS;
+		let computedV;
+
+		l *= 2;
+		if (l <= 1) {
+			s *= l;
 		} else {
-			hsl.s *= (2 - hsl.l);
+			s *= (2 - l);
 		}
-		let computedV = (hsl.l + hsl.s) / 2;
-		let computedS = (2 * hsl.s) / (hsl.l + hsl.s);
+
+		if (lMin <=1) {
+			sMin *= lMin;
+		} else {
+			sMin *= (2 - lMin);
+		}
+
+		if (l === 0) {
+			computedS = (2 * sMin) / (lMin + sMin);
+		} else {
+			computedS = (2 * s) / (l + s);
+		}
+
+		computedV = (l + s) / 2;
 
 		let hsvObj = {
-			h: hsl.h,
+			h: h,
 			s: computedS,
 			v: computedV
 		};
