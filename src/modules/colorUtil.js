@@ -1,6 +1,7 @@
 import {
-	isString,
-	isObject
+	isNumber,
+	isObject,
+	isString
 } from '../util/util';
 
 let ColorUtil = function () {

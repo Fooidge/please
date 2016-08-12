@@ -61,4 +61,43 @@ let defaults = function(defaults = {}, obj) {
 	return updated;
 }
 
-export { clamp, isNumber, isObject, isString, random, defaults };
+let inRange = function(number, start, end) {
+	return number >= Math.min(start, end) && number < Math.max(start, end);
+}
+
+/**
+ * {
+ * 	  r: {
+ *  	type: Number
+ * 	 	rangeMin: 0
+ * 	 	rangeMax: 100
+ * 	  }
+ * }
+ */
+let specTest = function(spec, obj) {
+	for (let key in spec) {
+		if (spec.hasOwnProperty(key)) {
+			if (!obj.hasOwnProperty(key)) {
+				return false;
+			}
+			switch(spec[key].type) {
+				case 'Number':
+					if (!isNumber(obj[key])) {
+						return false;
+					}
+				break;
+				case 'String':
+					if (!isString(obj[key])) {
+						return false;
+					}
+				break;
+			}
+			if (!inRange(obj[key], spec[key].rangeMin, spec[key].rangeMax)) {
+				return false;
+			}
+		}
+	}
+	return true;
+}
+
+export { clamp, isNumber, isObject, isString, random, defaults, inRange, specTest };
