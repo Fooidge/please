@@ -19,7 +19,7 @@ let clamp = function(value, min, max) {
 
 //Adapted from _.isNumber
 let isNumber = function(value) {
-  return !isNaN(parseFloat(value)) && isFinite(value);
+	return !isNaN(parseFloat(value)) && isFinite(value);
 };
 
 //Adapted from _.isObject
@@ -44,10 +44,6 @@ let random = function(lower, upper) {
 		return Math.min(lower + (rand * (upper - lower + parseFloat('1e-' + ((rand + '').length - 1)))), upper);
 	}
 	return lower + Math.floor(Math.random() * (upper - lower + 1));
-}
-
-let equals = function(value, other) {
-  return value === other || (value !== value && other !== other);
 }
 
 let defaults = function(defaults = {}, obj) {
