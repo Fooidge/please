@@ -76,9 +76,14 @@ let specTest = function(spec, obj) {
 			}
 			switch(spec[key].type) {
 				case 'Number':
-					if (!isNumber(obj[key])) {
+					let specProp = spec[key];
+					let objProp = obj[key];
+					let min = specProp.rangeMin;
+					let max = specProp.rangeMax;
+					if (!isNumber(objProp)) {
 						return false;
-					} else if (!inRange(obj[key], spec[key].rangeMin, spec[key].rangeMax)) {
+					}
+					if (!inRange(objProp, min, max)) {
 						return false;
 					}
 				break;

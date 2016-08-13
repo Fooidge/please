@@ -73,9 +73,9 @@ describe('random', () => {
 			}
 		};
 		let obj = {
-			bar: 400
+			foo: 400
 		};
 		let test = specTest(spec, obj);
 		expect(test).to.equal(false);
-	})
+	});
 });

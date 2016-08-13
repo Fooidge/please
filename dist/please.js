@@ -84,7 +84,7 @@
 		    type: 'String'
 	 	  }
 	 * }
-	 */var specTest=function specTest(spec,obj){for(var key in spec){if(spec.hasOwnProperty(key)){if(!obj.hasOwnProperty(key)){return false;}switch(spec[key].type){case'Number':if(!isNumber(obj[key])){return false;}else if(!inRange(obj[key],spec[key].rangeMin,spec[key].rangeMax)){return false;}break;case'String':if(!isString(obj[key])){return false;}break;}}}return true;};exports.clamp=clamp;exports.isNumber=isNumber;exports.isObject=isObject;exports.isString=isString;exports.random=random;exports.defaults=defaults;exports.inRange=inRange;exports.specTest=specTest;
+	 */var specTest=function specTest(spec,obj){for(var key in spec){if(spec.hasOwnProperty(key)){if(!obj.hasOwnProperty(key)){return false;}switch(spec[key].type){case'Number':var specProp=spec[key];var objProp=obj[key];var min=specProp.rangeMin;var max=specProp.rangeMax;if(!isNumber(objProp)){return false;}if(!inRange(objProp,min,max)){return false;}break;case'String':if(!isString(obj[key])){return false;}break;}}}return true;};exports.clamp=clamp;exports.isNumber=isNumber;exports.isObject=isObject;exports.isString=isString;exports.random=random;exports.defaults=defaults;exports.inRange=inRange;exports.specTest=specTest;
 
 /***/ },
 /* 4 */
