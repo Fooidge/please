@@ -38,8 +38,8 @@ let isString = function(value) {
 };
 
 //Adapted from _.random
-let random = function(lower, upper) {
-	if(lower % 1 || upper % 1) {
+let random = function(lower, upper, floating) {
+	if(floating || lower % 1 || upper % 1) {
 		let rand = Math.random();
 		return Math.min(lower + (rand * (upper - lower + parseFloat('1e-' + ((rand + '').length - 1)))), upper);
 	}
@@ -84,6 +84,8 @@ let specTest = function(spec, obj) {
 				case 'Number':
 					if (!isNumber(obj[key])) {
 						return false;
+					} else if (!inRange(obj[key], spec[key].rangeMin, spec[key].rangeMax)) {
+						return false;
 					}
 				break;
 				case 'String':
@@ -91,9 +93,6 @@ let specTest = function(spec, obj) {
 						return false;
 					}
 				break;
-			}
-			if (!inRange(obj[key], spec[key].rangeMin, spec[key].rangeMax)) {
-				return false;
 			}
 		}
 	}
