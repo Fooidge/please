@@ -67,11 +67,14 @@ let inRange = function(number, start, end) {
 
 /**
  * {
- * 	  r: {
- *  	type: Number
+ * 	  foo: {
+ *  	type: 'Number'
  * 	 	rangeMin: 0
  * 	 	rangeMax: 100
- * 	  }
+ * 	  },
+ 	  bar: {
+	    type: 'String'
+ 	  }
  * }
  */
 let specTest = function(spec, obj) {

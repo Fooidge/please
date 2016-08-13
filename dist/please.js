@@ -74,15 +74,18 @@
 	var isNumber=function isNumber(value){return!isNaN(parseFloat(value))&&isFinite(value);};//Adapted from _.isObject
 	var isObject=function isObject(value){return value!=null&&(typeof value==='undefined'?'undefined':_typeof(value))==='object'&&isArray(value)===false;};var isObjectLike=function isObjectLike(value){return!!value&&(typeof value==='undefined'?'undefined':_typeof(value))=='object';};//Adapted from _.isString
 	var isString=function isString(value){return typeof value=='string'||!isArray(value)&&isObjectLike(value)&&objectToString.call(value)==stringTag;};//Adapted from _.random
-	var random=function random(lower,upper){if(lower%1||upper%1){var rand=Math.random();return Math.min(lower+rand*(upper-lower+parseFloat('1e-'+((rand+'').length-1))),upper);}return lower+Math.floor(Math.random()*(upper-lower+1));};var defaults=function defaults(){var defaults=arguments.length<=0||arguments[0]===undefined?{}:arguments[0];var obj=arguments[1];var updated={};for(var key in defaults){if(defaults.hasOwnProperty(key)){updated[key]=defaults[key];}}for(var _key in obj){if(obj.hasOwnProperty(_key)&&obj[_key]!=updated[_key]){updated[_key]=obj[_key];}}return updated;};var inRange=function inRange(number,start,end){return number>=Math.min(start,end)&&number<Math.max(start,end);};/**
+	var random=function random(lower,upper,floating){if(floating||lower%1||upper%1){var rand=Math.random();return Math.min(lower+rand*(upper-lower+parseFloat('1e-'+((rand+'').length-1))),upper);}return lower+Math.floor(Math.random()*(upper-lower+1));};var defaults=function defaults(){var defaults=arguments.length<=0||arguments[0]===undefined?{}:arguments[0];var obj=arguments[1];var updated={};for(var key in defaults){if(defaults.hasOwnProperty(key)){updated[key]=defaults[key];}}for(var _key in obj){if(obj.hasOwnProperty(_key)&&obj[_key]!=updated[_key]){updated[_key]=obj[_key];}}return updated;};var inRange=function inRange(number,start,end){return number>=Math.min(start,end)&&number<Math.max(start,end);};/**
 	 * {
-	 * 	  r: {
-	 *  	type: Number
+	 * 	  foo: {
+	 *  	type: 'Number'
 	 * 	 	rangeMin: 0
 	 * 	 	rangeMax: 100
-	 * 	  }
+	 * 	  },
+	 	  bar: {
+		    type: 'String'
+	 	  }
 	 * }
-	 */var specTest=function specTest(spec,obj){for(var key in spec){if(spec.hasOwnProperty(key)){if(!obj.hasOwnProperty(key)){return false;}switch(spec[key].type){case'Number':if(!isNumber(obj[key])){return false;}break;case'String':if(!isString(obj[key])){return false;}break;}if(!inRange(obj[key],spec[key].rangeMin,spec[key].rangeMax)){return false;}}}return true;};exports.clamp=clamp;exports.isNumber=isNumber;exports.isObject=isObject;exports.isString=isString;exports.random=random;exports.defaults=defaults;exports.inRange=inRange;exports.specTest=specTest;
+	 */var specTest=function specTest(spec,obj){for(var key in spec){if(spec.hasOwnProperty(key)){if(!obj.hasOwnProperty(key)){return false;}switch(spec[key].type){case'Number':if(!isNumber(obj[key])){return false;}else if(!inRange(obj[key],spec[key].rangeMin,spec[key].rangeMax)){return false;}break;case'String':if(!isString(obj[key])){return false;}break;}}}return true;};exports.clamp=clamp;exports.isNumber=isNumber;exports.isObject=isObject;exports.isString=isString;exports.random=random;exports.defaults=defaults;exports.inRange=inRange;exports.specTest=specTest;
 
 /***/ },
 /* 4 */
