@@ -4,17 +4,8 @@ let objectToString = objectProto.toString;
 let hasOwnProperty = objectProto.hasOwnProperty;
 let stringTag = '[object String]';
 
-//Adapted from _.clamp
 let clamp = function(value, min, max) {
-	if (value === value) {
-		if (max !== undefined) {
-			value = value <= max ? value : max;
-		}
-		if (min !== undefined) {
-			value = value >= min ? value : min;
-		}
-	}
-	return value;
+	return Math.max(min, Math.min(max, value));
 };
 
 //Adapted from _.isNumber
@@ -46,7 +37,7 @@ let random = function(lower, upper, floating) {
 	return lower + Math.floor(Math.random() * (upper - lower + 1));
 }
 
-let defaults = function(defaults = {}, obj) {
+let defaults = function(defaults, obj) {
 	let updated = {};
 	for (let key in defaults) {
 		if(defaults.hasOwnProperty(key)) {
