@@ -79,17 +79,27 @@ let Hsv = function () {
 		if (!this._isHsv(hsv)) {
 			throw new Error('Not a valid HSV object.');
 		}
-		let computedL = (2 - hsv.s) * hsv.v;
-		let computedS = hsv.s * hsv.v;
-		if (computedL <= 1) {
-			computedS = computedS / computedL;
+
+		let { h } = hsv;
+		let { s } = hsv;
+		let { v } = hsv;
+		let vMin = Math.max(v, 0.01);
+		let lMin;
+		let computedS;
+		let computedL;
+
+		lMin = (2 - s) * vMin;
+		computedL = ((2 - s) * v) / 2;
+		computedS = s * vMin;
+		if (lMin <= 1) {
+			lMin /= lMin;
 		} else {
-			computedS = computedS / (2 - computedL);
+			lMin /= (2 - lMin);
 		}
-		computedL = computedL / 2;
+		computedS = computedS || 0;
 
 		let hslObj = {
-			h: hsv.h,
+			h: h,
 			s: computedS,
 			l: computedL
 		};
