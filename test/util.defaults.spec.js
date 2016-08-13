@@ -10,7 +10,7 @@ describe('defaults', () => {
 			bar: 2
 		};
 		let test = defaults(objOne, objTwo);
-		expect(test).to.have.all.keys('foo', 'bar');
+		expect(test).to.have.all.keys(['foo', 'bar']);
 	});
 	it('Overwrites values for shared keys', () => {
 		let objOne = {
@@ -25,5 +25,9 @@ describe('defaults', () => {
 			.to.have.property('foo')
 			.that.is.a('number')
 			.that.equals(3);
+	});
+	it('Does nothing for empty objects', () => {
+		let test = defaults({}, {});
+		expect(test).to.be.empty;
 	});
 });

@@ -40,11 +40,13 @@ let random = function(lower, upper, floating) {
 let defaults = function(defaults, obj) {
 	let updated = {};
 	for (let key in defaults) {
+		/* istanbul ignore else: untestable */
 		if(defaults.hasOwnProperty(key)) {
 			updated[key] = defaults[key];
 		}
 	}
 	for (let key in obj) {
+		/* istanbul ignore else: untestable */
 		if (obj.hasOwnProperty(key) && obj[key] != updated[key]) {
 			updated[key] = obj[key];
 		}
@@ -70,6 +72,7 @@ let inRange = function(number, start, end) {
  */
 let specTest = function(spec, obj) {
 	for (let key in spec) {
+		/* istanbul ignore else: untestable */
 		if (spec.hasOwnProperty(key)) {
 			if (!obj.hasOwnProperty(key)) {
 				return false;
