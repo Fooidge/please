@@ -1,7 +1,8 @@
 import {
 	isNumber,
 	isObject,
-	isString
+	isString,
+	specTest
 } from '../util/util';
 
 let ColorUtil = function () {
@@ -30,10 +31,12 @@ let ColorUtil = function () {
 	 * @return {Boolean}
 	 */
 	this._isHsv = function(color) {
-		if (isObject(color) && (color.h != null) && (color.s != null) && (color.v != null)) {
-			return true;
-		}
-		return false;
+		let spec = {
+			h: { min: 0, max: 360 },
+			s: { min: 0, max: 1 },
+			v: { min: 0, max: 1 }
+		};
+		return specTest(spec, color);
 	};
 
 	/**
@@ -42,10 +45,12 @@ let ColorUtil = function () {
 	 * @return {Boolean}
 	 */
 	this._isHsl = function(color) {
-		if (isObject(color) && (color.h != null) && (color.s != null) && (color.l != null)) {
-			return true;
-		}
-		return false;
+		let spec = {
+			h: { min: 0, max: 100 },
+			s: { min: 0, max: 1 },
+			l: { min: 0, max: 1 }
+		};
+		return specTest(spec, color);
 	};
 
 	/**
@@ -67,10 +72,12 @@ let ColorUtil = function () {
 	 * @return {Boolean}
 	 */
 	this._isRgb = function(color) {
-		if (isObject(color) && (color.r != null) && (color.g != null) && (color.b != null)) {
-			return true;
-		}
-		return false;
+		let spec = {
+			r: { min: 0, max: 255 },
+			g: { min: 0, max: 255 },
+			b: { min: 0, max: 255 }
+		};
+		return specTest(spec, color);
 	};
 
 	/**
@@ -117,6 +124,11 @@ let ColorUtil = function () {
 	 * @return {Boolean}
 	 */
 	this._isXyz = function(color) {
+		// let spec = {
+		// 	x: { min: 0, max: 255 },
+		// 	y: { min: 0, max: 255 },
+		// 	z: { min: 0, max: 255 }
+		// };
 		if (isObject(color) && (color.x != null) && (color.y != null) && (color.z != null)) {
 			return true;
 		}
@@ -129,10 +141,12 @@ let ColorUtil = function () {
 	 * @return {Boolean}
 	 */
 	this._isLab = function(color) {
-		if (isObject(color) && (color.l != null) && (color.a != null) && (color.b != null)) {
-			return true;
-		}
-		return false;
+		let spec = {
+			l: { min: -128, max: 127 },
+			a: { min: -128, max: 127 },
+			b: { min: -128, max: 127 }
+		};
+		return specTest(spec, color);
 	};
 
 	/**

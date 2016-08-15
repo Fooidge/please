@@ -5,9 +5,8 @@ describe('random', () => {
 	it('Accepts an object of the correct spec', () => {
 		let spec = {
 			foo: {
-				type: 'Number',
-				rangeMin: 0,
-				rangeMax: 100
+				min: 0,
+				max: 100
 			}
 		};
 		let obj = {
@@ -15,23 +14,23 @@ describe('random', () => {
 		};
 		let test = specTest(spec, obj);
 		expect(test).to.equal(true);
-		spec = {
+	});
+	it('Rejects test of wrong type', () => {
+		let spec = {
 			foo: {
-				type: 'String',
+				min: 0,
+				max: 100
 			}
 		};
-		obj = {
-			foo: 'A string'
-		};
-		test = specTest(spec, obj);
-		expect(test).to.equal(true);
+		let string = 'A String';
+		let test = specTest(spec, string);
+		expect(test).to.equal(false);
 	});
 	it('Rejects an object with a missing key from the spec', () => {
 		let spec = {
 			foo: {
-				type: 'Number',
-				rangeMin: 0,
-				rangeMax: 100
+				min: 0,
+				max: 100
 			}
 		};
 		let obj = {
@@ -43,9 +42,8 @@ describe('random', () => {
 	it('Rejects an object of the wrong type from the spec', () => {
 		let spec = {
 			foo: {
-				type: 'Number',
-				rangeMin: 0,
-				rangeMax: 100
+				min: 0,
+				max: 100
 			}
 		};
 		let obj = {
@@ -53,23 +51,12 @@ describe('random', () => {
 		};
 		let test = specTest(spec, obj);
 		expect(test).to.equal(false);
-		spec = {
-			foo: {
-				type: 'String'
-			}
-		};
-		obj = {
-			foo: 14
-		};
-		test = specTest(spec, obj);
-		expect(test).to.equal(false);
 	});
 	it('Rejects an object with a number out of range', () => {
 		let spec = {
 			foo: {
-				type: 'Number',
-				rangeMin: 0,
-				rangeMax: 100
+				min: 0,
+				max: 100
 			}
 		};
 		let obj = {

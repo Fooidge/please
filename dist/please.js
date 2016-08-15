@@ -73,18 +73,14 @@
 	var isNumber=function isNumber(value){return!isNaN(parseFloat(value))&&isFinite(value);};//Adapted from _.isObject
 	var isObject=function isObject(value){return value!=null&&(typeof value==='undefined'?'undefined':_typeof(value))==='object'&&isArray(value)===false;};var isObjectLike=function isObjectLike(value){return!!value&&(typeof value==='undefined'?'undefined':_typeof(value))=='object';};//Adapted from _.isString
 	var isString=function isString(value){return typeof value=='string'||!isArray(value)&&isObjectLike(value)&&objectToString.call(value)==stringTag;};//Adapted from _.random
-	var random=function random(lower,upper,floating){if(floating||lower%1||upper%1){var rand=Math.random();return Math.min(lower+rand*(upper-lower+parseFloat('1e-'+((rand+'').length-1))),upper);}return lower+Math.floor(Math.random()*(upper-lower+1));};var defaults=function defaults(_defaults,obj){var updated={};for(var key in _defaults){if(_defaults.hasOwnProperty(key)){updated[key]=_defaults[key];}}for(var _key in obj){if(obj.hasOwnProperty(_key)&&obj[_key]!=updated[_key]){updated[_key]=obj[_key];}}return updated;};var inRange=function inRange(number,start,end){return number>=Math.min(start,end)&&number<Math.max(start,end);};/**
+	var random=function random(lower,upper,floating){if(floating||lower%1||upper%1){var rand=Math.random();return Math.min(lower+rand*(upper-lower+parseFloat('1e-'+((rand+'').length-1))),upper);}return lower+Math.floor(Math.random()*(upper-lower+1));};var defaults=function defaults(_defaults,obj){var updated={};for(var key in _defaults){/* istanbul ignore else: untestable */if(_defaults.hasOwnProperty(key)){updated[key]=_defaults[key];}}for(var _key in obj){/* istanbul ignore else: untestable */if(obj.hasOwnProperty(_key)&&obj[_key]!=updated[_key]){updated[_key]=obj[_key];}}return updated;};var inRange=function inRange(number,start,end){return number>=Math.min(start,end)&&number<=Math.max(start,end);};/**
 	 * {
 	 * 	  foo: {
-	 *  	type: 'Number'
-	 * 	 	rangeMin: 0
-	 * 	 	rangeMax: 100
-	 * 	  },
-	 	  bar: {
-		    type: 'String'
-	 	  }
+	 * 	 	min: 0
+	 * 	 	max: 100
+	 * 	  }
 	 * }
-	 */var specTest=function specTest(spec,obj){for(var key in spec){if(spec.hasOwnProperty(key)){if(!obj.hasOwnProperty(key)){return false;}switch(spec[key].type){case'Number':var specProp=spec[key];var objProp=obj[key];var min=specProp.rangeMin;var max=specProp.rangeMax;if(!isNumber(objProp)){return false;}if(!inRange(objProp,min,max)){return false;}break;case'String':if(!isString(obj[key])){return false;}break;}}}return true;};exports.clamp=clamp;exports.isNumber=isNumber;exports.isObject=isObject;exports.isString=isString;exports.random=random;exports.defaults=defaults;exports.inRange=inRange;exports.specTest=specTest;
+	 */var specTest=function specTest(spec,obj){if(!isObject(obj)){return false;}for(var key in spec){/* istanbul ignore else: untestable */if(spec.hasOwnProperty(key)){if(!obj.hasOwnProperty(key)){return false;}var specProp=spec[key];var objProp=obj[key];var min=specProp.min;var max=specProp.max;if(!isNumber(objProp)){return false;}else if(!inRange(objProp,min,max)){return false;}}}return true;};exports.clamp=clamp;exports.isNumber=isNumber;exports.isObject=isObject;exports.isString=isString;exports.random=random;exports.defaults=defaults;exports.inRange=inRange;exports.specTest=specTest;
 
 /***/ },
 /* 4 */
@@ -114,11 +110,11 @@
 		 * Returns true if color is HSV and false otherwise.
 		 * @param  {Any} color
 		 * @return {Boolean}
-		 */this._isHsv=function(color){if((0,_util.isObject)(color)&&color.h!=null&&color.s!=null&&color.v!=null){return true;}return false;};/**
+		 */this._isHsv=function(color){var spec={h:{min:0,max:360},s:{min:0,max:1},v:{min:0,max:1}};return(0,_util.specTest)(spec,color);};/**
 		 * Returns true if color is HSL and false otherwise.
 		 * @param  {Any} color
 		 * @return {Boolean}
-		 */this._isHsl=function(color){if((0,_util.isObject)(color)&&color.h!=null&&color.s!=null&&color.l!=null){return true;}return false;};/**
+		 */this._isHsl=function(color){var spec={h:{min:0,max:100},s:{min:0,max:1},l:{min:0,max:1}};return(0,_util.specTest)(spec,color);};/**
 		 * Returns true if color is an HSL string and false otherwise.
 		 * @param  {Any} color
 		 * @return {Boolean}
@@ -126,7 +122,7 @@
 		 * Returns true if color is RGB and false otherwise.
 		 * @param  {Any} color
 		 * @return {Boolean}
-		 */this._isRgb=function(color){if((0,_util.isObject)(color)&&color.r!=null&&color.g!=null&&color.b!=null){return true;}return false;};/**
+		 */this._isRgb=function(color){var spec={r:{min:0,max:255},g:{min:0,max:255},b:{min:0,max:255}};return(0,_util.specTest)(spec,color);};/**
 		 * Returns true if color is an RGB string and false otherwise.
 		 * @param  {Any} color
 		 * @return {Boolean}
@@ -142,11 +138,16 @@
 		 * Returns true if color is XYZ and false otherwise.
 		 * @param  {Any} color
 		 * @return {Boolean}
-		 */this._isXyz=function(color){if((0,_util.isObject)(color)&&color.x!=null&&color.y!=null&&color.z!=null){return true;}return false;};/**
+		 */this._isXyz=function(color){// let spec = {
+	// 	x: { min: 0, max: 255 },
+	// 	y: { min: 0, max: 255 },
+	// 	z: { min: 0, max: 255 }
+	// };
+	if((0,_util.isObject)(color)&&color.x!=null&&color.y!=null&&color.z!=null){return true;}return false;};/**
 		 * Returns true if color is LAB and false otherwise.
 		 * @param  {Any} color
 		 * @return {Boolean}
-		 */this._isLab=function(color){if((0,_util.isObject)(color)&&color.l!=null&&color.a!=null&&color.b!=null){return true;}return false;};/**
+		 */this._isLab=function(color){var spec={l:{min:-128,max:127},a:{min:-128,max:127},b:{min:-128,max:127}};return(0,_util.specTest)(spec,color);};/**
 		 * Returns true is color is CMY and false otherwise.
 		 * @param  {Any} color
 		 * @return {Boolean}

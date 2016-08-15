@@ -14,4 +14,10 @@ describe('inRange', () => {
 		let test = inRange(1024, 0, 100);
 		expect(test).to.equal(false);
 	});
+	it('Is inclusive of range bounds', () => {
+		let test = inRange(0, 0, 100);
+		expect(test).to.equal(true);
+		test = inRange(100, 0, 100);
+		expect(test).to.equal(true);
+	});
 });

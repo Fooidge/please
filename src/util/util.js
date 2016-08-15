@@ -55,46 +55,35 @@ let defaults = function(defaults, obj) {
 }
 
 let inRange = function(number, start, end) {
-	return number >= Math.min(start, end) && number < Math.max(start, end);
+	return number >= Math.min(start, end) && number <= Math.max(start, end);
 }
 
 /**
  * {
  * 	  foo: {
- *  	type: 'Number'
- * 	 	rangeMin: 0
- * 	 	rangeMax: 100
- * 	  },
- 	  bar: {
-	    type: 'String'
- 	  }
+ * 	 	min: 0
+ * 	 	max: 100
+ * 	  }
  * }
  */
 let specTest = function(spec, obj) {
+	if (!isObject(obj)) {
+		return false;
+	}
 	for (let key in spec) {
 		/* istanbul ignore else: untestable */
 		if (spec.hasOwnProperty(key)) {
 			if (!obj.hasOwnProperty(key)) {
 				return false;
 			}
-			switch(spec[key].type) {
-				case 'Number':
-					let specProp = spec[key];
-					let objProp = obj[key];
-					let min = specProp.rangeMin;
-					let max = specProp.rangeMax;
-					if (!isNumber(objProp)) {
-						return false;
-					}
-					if (!inRange(objProp, min, max)) {
-						return false;
-					}
-				break;
-				case 'String':
-					if (!isString(obj[key])) {
-						return false;
-					}
-				break;
+			let specProp = spec[key];
+			let objProp = obj[key];
+			let min = specProp.min;
+			let max = specProp.max;
+			if (!isNumber(objProp)) {
+				return false;
+			} else if (!inRange(objProp, min, max)) {
+				return false;
 			}
 		}
 	}
