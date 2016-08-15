@@ -78,7 +78,7 @@ var getHsvValue = function() {
 }
 
 var getHslValue = function() {
-	var values = stringToValues(rgb.value);
+	var values = stringToValues(hsl.value);
 	var hslVal = {
 		h: values[0],
 		s: values[1],
@@ -88,7 +88,7 @@ var getHslValue = function() {
 }
 
 var getCmykValue = function() {
-	var values = stringToValues(rgb.value);
+	var values = stringToValues(cmyk.value);
 	var cmykVal = {
 		c: values[0],
 		m: values[1],
