@@ -59,7 +59,7 @@ let ColorUtil = function () {
 	 * @return {Boolean}
 	 */
 	this._isHslString = function(color) {
-		let hslTest = /hsl\(s?d{1,3},s?d{1,3}%,s?d{1,3}%s?\)/i;
+		let hslTest = /hsl\(\s?\d{1,3},\s?\d{1,3}%,\s?\d{1,3}%\s?\)/i;
 		if (isString(color) && hslTest.test(color)) {
 			return true;
 		}
