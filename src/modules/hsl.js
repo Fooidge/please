@@ -6,8 +6,8 @@ let Hsl = function() {
 		}
 
 		let { h } = hsl;
-		let { s } = hsl;
-		let { l } = hsl;
+		let s = hsl.s / 100;
+		let l = hsl.l / 100;
 		let sMin = hsl.s;
 		let lMin = Math.max(l, 0.01);
 		let computedS;

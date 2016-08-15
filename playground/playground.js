@@ -46,10 +46,11 @@ var setCmykValue = function(color) {
 
 var stringToValues = function(string) {
 	var values = string.replace(/ /g,'').split(',');
+	var parsedValues = [];
 	for (var i = values.length - 1; i >= 0; i--) {
-		values[i] = parseFloat(values[i]).toPrecision(2);
+		parsedValues[i] = parseFloat(values[i]);
 	}
-	return values;
+	return parsedValues;
 }
 
 var getRgbValue = function() {

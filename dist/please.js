@@ -114,7 +114,7 @@
 		 * Returns true if color is HSL and false otherwise.
 		 * @param  {Any} color
 		 * @return {Boolean}
-		 */this._isHsl=function(color){var spec={h:{min:0,max:100},s:{min:0,max:1},l:{min:0,max:1}};return(0,_util.specTest)(spec,color);};/**
+		 */this._isHsl=function(color){var spec={h:{min:0,max:360},s:{min:0,max:100},l:{min:0,max:100}};return(0,_util.specTest)(spec,color);};/**
 		 * Returns true if color is an HSL string and false otherwise.
 		 * @param  {Any} color
 		 * @return {Boolean}
@@ -162,7 +162,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';Object.defineProperty(exports,"__esModule",{value:true});var _util=__webpack_require__(3);var Hsv=function Hsv(){this._hsvToRgb=function(hsv){if(!this._isHsv(hsv)){throw new Error('Not a valid HSV object.');}var h=hsv.h%360;var s=hsv.s;var v=hsv.v;//no saturation case
-	if(s===0){var computedV=v*255;var rgbObj={r:computedV,g:computedV,b:computedV};return rgbObj;}h/=60;var i=Math.floor(h);var f=h-i;var p=v*(1-s);var q=v*(1-s*f);var t=v*(1-s*(1-f));var r=void 0,g=void 0,b=void 0;switch(i){case 0:r=v;g=t;b=p;break;case 1:r=q;g=v;b=p;break;case 2:r=p;g=v;b=t;break;case 3:r=p;g=q;b=v;break;case 4:r=t;g=p;b=v;break;case 5:r=v;g=p;b=q;break;}var rgbObj={r:r*255,g:g*255,b:b*255};return rgbObj;};this._hsvToHex=function(hsv){return this._rgbToHex(this._hsvToRgb(hsv));};this._hsvToHsl=function(hsv){if(!this._isHsv(hsv)){throw new Error('Not a valid HSV object.');}var h=hsv.h;var s=hsv.s;var v=hsv.v;var vMin=Math.max(v,0.01);var lMin=void 0;var computedS=void 0;var computedL=void 0;lMin=(2-s)*vMin;computedL=(2-s)*v/2;computedS=s*vMin;if(lMin<=1){lMin/=lMin;}else{lMin/=2-lMin;}computedS=computedS||0;var hslObj={h:h,s:computedS,l:computedL};return hslObj;};this._hsvToXyz=function(hsv){return this._rgbToXyz(this._hsvToRgb(hsv));};this._hsvToCmyk=function(hsv){return this._rgbToCmyk(this._hsvToRgb(hsv));};this._hsvToLab=function(hsv){return this._xyzToLab(this._hsvToXyz(hsv));};/**
+	if(s===0){var computedV=v*255;var rgbObj={r:computedV,g:computedV,b:computedV};return rgbObj;}h/=60;var i=Math.floor(h);var f=h-i;var p=v*(1-s);var q=v*(1-s*f);var t=v*(1-s*(1-f));var r=void 0,g=void 0,b=void 0;switch(i){case 0:r=v;g=t;b=p;break;case 1:r=q;g=v;b=p;break;case 2:r=p;g=v;b=t;break;case 3:r=p;g=q;b=v;break;case 4:r=t;g=p;b=v;break;case 5:r=v;g=p;b=q;break;}var rgbObj={r:r*255,g:g*255,b:b*255};return rgbObj;};this._hsvToHex=function(hsv){return this._rgbToHex(this._hsvToRgb(hsv));};this._hsvToHsl=function(hsv){if(!this._isHsv(hsv)){throw new Error('Not a valid HSV object.');}var h=hsv.h;var s=hsv.s;var v=hsv.v;var vMin=Math.max(v,0.01);var lMin=void 0;var computedS=void 0;var computedL=void 0;lMin=(2-s)*vMin;computedL=(2-s)*v/2;computedS=s*vMin;if(lMin<=1){lMin/=lMin;}else{lMin/=2-lMin;}computedS=computedS||0;var hslObj={h:h,s:computedS*100,l:computedL*100};return hslObj;};this._hsvToXyz=function(hsv){return this._rgbToXyz(this._hsvToRgb(hsv));};this._hsvToCmyk=function(hsv){return this._rgbToCmyk(this._hsvToRgb(hsv));};this._hsvToLab=function(hsv){return this._xyzToLab(this._hsvToXyz(hsv));};/**
 		 * Getter/Setter for hue property.
 		 * @param  {Number} value
 		 * @return {Object}
@@ -220,7 +220,7 @@
 /* 11 */
 /***/ function(module, exports) {
 
-	'use strict';Object.defineProperty(exports,"__esModule",{value:true});var Hsl=function Hsl(){this._hslToHsv=function(hsl){if(!this._isHsl(hsl)){throw new Error('Not a valid HSL object.');}var h=hsl.h;var s=hsl.s;var l=hsl.l;var sMin=hsl.s;var lMin=Math.max(l,0.01);var computedS=void 0;var computedV=void 0;l*=2;if(l<=1){s*=l;}else{s*=2-l;}if(lMin<=1){sMin*=lMin;}else{sMin*=2-lMin;}if(l===0){computedS=2*sMin/(lMin+sMin);}else{computedS=2*s/(l+s);}computedV=(l+s)/2;var hsvObj={h:h,s:computedS,v:computedV};return hsvObj;};this.hsl=function(value){if(value!=null){this.__model=this._hslToHsv(value);return this;}return this._hsvToHsl(this.__model);};this.hslString=function(){var hsl=this._hsvToHsl(this.__model);var h=hsl.h;var s=hsl.s*100;var l=hsl.l*100;if(this.__model.a==null){return'hsl('+h+','+s+'%,'+l+'%)';}return'hsla('+h+','+s+'%,'+l+'%,'+this.__model.a+')';};};exports.default=Hsl;
+	'use strict';Object.defineProperty(exports,"__esModule",{value:true});var Hsl=function Hsl(){this._hslToHsv=function(hsl){if(!this._isHsl(hsl)){throw new Error('Not a valid HSL object.');}var h=hsl.h;var s=hsl.s/100;var l=hsl.l/100;var sMin=hsl.s;var lMin=Math.max(l,0.01);var computedS=void 0;var computedV=void 0;l*=2;if(l<=1){s*=l;}else{s*=2-l;}if(lMin<=1){sMin*=lMin;}else{sMin*=2-lMin;}if(l===0){computedS=2*sMin/(lMin+sMin);}else{computedS=2*s/(l+s);}computedV=(l+s)/2;var hsvObj={h:h,s:computedS,v:computedV};return hsvObj;};this.hsl=function(value){if(value!=null){this.__model=this._hslToHsv(value);return this;}return this._hsvToHsl(this.__model);};this.hslString=function(){var hsl=this._hsvToHsl(this.__model);var h=hsl.h;var s=hsl.s*100;var l=hsl.l*100;if(this.__model.a==null){return'hsl('+h+','+s+'%,'+l+'%)';}return'hsla('+h+','+s+'%,'+l+'%,'+this.__model.a+')';};};exports.default=Hsl;
 
 /***/ },
 /* 12 */

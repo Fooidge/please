@@ -46,9 +46,9 @@ let ColorUtil = function () {
 	 */
 	this._isHsl = function(color) {
 		let spec = {
-			h: { min: 0, max: 100 },
-			s: { min: 0, max: 1 },
-			l: { min: 0, max: 1 }
+			h: { min: 0, max: 360 },
+			s: { min: 0, max: 100 },
+			l: { min: 0, max: 100 }
 		};
 		return specTest(spec, color);
 	};
