@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import Color from '../src/Color.js';
+import Color from '../../src/Color.js';
 
 
 describe('_isRgb', () => {

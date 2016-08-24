@@ -6,8 +6,8 @@
   "scripts": {
     "watch": "webpack --progress --colors --watch",
     "build": "webpack; PROD_ENV=1 webpack --progress --colors",
-    "test": "babel-node ./node_modules/.bin/isparta cover _mocha -- -w",
-    "tests": "babel-node ./node_modules/.bin/isparta cover _mocha"
+    "test": "babel-node ./node_modules/.bin/isparta cover _mocha -- -c -s 75 --recursive ./test -w",
+    "tests": "babel-node ./node_modules/.bin/isparta cover _mocha -- -c -s 75 --recursive ./test"
   },
   "author": "Jordan Checkman",
   "license": "ISC",
