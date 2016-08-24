@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { isString } from '../src/util/util';
+import { isString } from '../../src/util/util';
 
 describe('isString', () => {
 	it('Accepts strings', () => {

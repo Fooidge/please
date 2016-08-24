@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { isObject } from '../src/util/util';
+import { isObject } from '../../src/util/util';
 
 describe('isObject', () => {
 	it('Accepts Objects', () => {

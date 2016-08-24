@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { random } from '../src/util/util';
+import { random } from '../../src/util/util';
 
 describe('random', () => {
 	it('Generates a number', () => {

@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { clamp } from '../src/util/util';
+import { clamp } from '../../src/util/util';
 
 describe('clamp', () => {
 	it('Does nothing when number in range', () => {

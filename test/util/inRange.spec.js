@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { inRange } from '../src/util/util';
+import { inRange } from '../../src/util/util';
 
 describe('inRange', () => {
 	it('Accepts number in range', () => {

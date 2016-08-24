@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { specTest } from '../src/util/util';
+import { specTest } from '../../src/util/util';
 
 describe('random', () => {
 	it('Accepts an object of the correct spec', () => {

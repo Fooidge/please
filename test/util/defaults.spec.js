@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { defaults } from '../src/util/util';
+import { defaults } from '../../src/util/util';
 
 describe('defaults', () => {
 	it('Adds missing keys', () => {
