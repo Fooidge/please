@@ -7,7 +7,8 @@
     "watch": "webpack --progress --colors --watch",
     "build": "webpack; PROD_ENV=1 webpack --progress --colors",
     "test": "babel-node ./node_modules/.bin/isparta cover _mocha -- -c -s 75 --recursive ./test -w",
-    "tests": "babel-node ./node_modules/.bin/isparta cover _mocha -- -c -s 75 --recursive ./test"
+    "tests": "babel-node ./node_modules/.bin/isparta cover _mocha -- -c -s 75 --recursive ./test",
+    "version": "npm run build && git add -A"
   },
   "author": "Jordan Checkman",
   "license": "ISC",
